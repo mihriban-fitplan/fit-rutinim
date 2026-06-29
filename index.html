@@ -9,10 +9,44 @@
     <style>
         .exercise-card { transition: all 0.2s ease; }
         .completed { background-color: #f0fdf4; border-color: #4ade80; }
+        
+        /* Basit Kadın Figürü GIF Hissiyatı Veren CSS Animasyonları */
+        @keyframes legPressAnim {
+            0%, 100% { transform: scaleX(1) translateX(0); }
+            50% { transform: scaleX(0.5) translateX(-8px); }
+        }
+        @keyframes bridgeAnim {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+        @keyframes bosuAnim {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-2px) rotate(3deg); }
+        }
+        @keyframes pressAnim {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes rowAnim {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-10px); }
+        }
+        @keyframes bugAnim {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-10deg); }
+        }
+
+        .anim-legpress { animation: legPressAnim 2s infinite ease-in-out; }
+        .anim-bridge { animation: bridgeAnim 2s infinite ease-in-out; transform-origin: bottom; }
+        .anim-bosu { animation: bosuAnim 1.5s infinite ease-in-out; }
+        .anim-press { animation: pressAnim 1.8s infinite ease-in-out; }
+        .anim-row { animation: rowAnim 2s infinite ease-in-out; }
+        .anim-bug { animation: bugAnim 1.5s infinite ease-in-out; transform-origin: center; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans pb-24">
 
+    <!-- Header -->
     <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-50">
         <h1 class="text-xl font-bold text-center">FitRutinim</h1>
         <p class="text-xs text-center text-indigo-200">Kas Kütlesi, Denge & APT Postür Desteği</p>
@@ -20,18 +54,22 @@
 
     <main class="max-w-md mx-auto p-4">
         
+        <!-- Gün Seçimi -->
         <div class="flex space-x-2 mb-4 bg-white p-1 rounded-lg shadow-sm">
             <button onclick="switchDay('day1')" id="btn-day1" class="flex-1 py-2 text-xs font-bold rounded-md bg-indigo-600 text-white">1. Gün: Alt & APT</button>
             <button onclick="switchDay('day2')" id="btn-day2" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">2. Gün: Üst & Postür</button>
             <button onclick="switchDay('day3')" id="btn-day3" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">3. Gün: Tüm Vücut</button>
         </div>
 
+        <!-- Rutin Bölümü -->
         <div id="program-section">
             
+            <!-- Kas Zorlama Kılavuzu -->
             <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl mb-3 text-xs text-indigo-900">
                 <span class="font-bold">🔥 Doğru Ağırlık Seçimi:</span> Set bittiğinde "nizami formda en fazla 2-3 tekrar daha yapabilirdim" hissetmelisiniz. Set aralarında <strong>60-90 sn</strong> dinlenin.
             </div>
 
+            <!-- Isınma Kartı -->
             <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl mb-4 text-xs space-y-1.5">
                 <div class="font-bold text-amber-800 flex items-center">🏃‍♀️ Sabit Isınma Protokolü (7 dk)</div>
                 <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-amber-900 font-bold">Hız: 4.5-5.0 km/s | Eğim: %1</span> (Hafif Başlangıç)</p>
@@ -39,8 +77,10 @@
                 <p class="text-gray-500 italic mt-1">*Bant sonrası 1-2 dk Couch Stretch & Kedi-Deve esnemesi yapınız (APT için).</p>
             </div>
 
+            <!-- Hareket Listesi -->
             <div id="workout-list" class="space-y-4"></div>
 
+            <!-- Soğuma Kartı -->
             <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl mt-4 text-xs space-y-1.5">
                 <div class="font-bold text-blue-800 flex items-center">🧘‍♀️ Sabit Soğuma Protokolü (5 dk)</div>
                 <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-blue-900 font-bold">Hız: 4.2-4.5 km/s | Eğim: %1.5</span> (Yavaşlama)</p>
@@ -49,6 +89,7 @@
             </div>
         </div>
 
+        <!-- Grafik Bölümü -->
         <div id="graph-section" class="hidden bg-white p-4 rounded-xl shadow-sm mt-2">
             <h3 class="text-sm font-bold text-gray-800 mb-4">Haftalık Ağırlık Gelişimi</h3>
             <canvas id="progressChart" width="400" height="250"></canvas>
@@ -56,6 +97,7 @@
 
     </main>
 
+    <!-- Nav Bar -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 flex justify-around max-w-md mx-auto shadow-lg z-50">
         <button onclick="showSection('program')" class="flex flex-col items-center text-indigo-600 font-medium text-xs">
             <span class="text-lg">🏋️‍♀️</span><span>Programım</span>
@@ -66,21 +108,70 @@
     </nav>
 
     <script>
+        // Tamamen kod tabanlı animasyonlu kadın figürü şablonları
+        const movingIcons = {
+            legPress: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-2 h-2 rounded-full bg-indigo-600 mb-1"></div><!-- Baş -->
+                <div class="w-6 h-1 bg-indigo-600 rounded"></div><!-- Gövde -->
+                <div class="w-6 h-1 bg-indigo-600 rounded mt-1 origin-left anim-legpress"></div><!-- Bacaklar -->
+                <div class="absolute right-2 bottom-2 text-[9px] text-indigo-400 font-bold">Leg Press</div>
+            </div>`,
+            gluteBridge: `<div class="w-full h-full flex flex-col items-center justify-end pb-2 relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-2 h-2 rounded-full bg-indigo-600 absolute left-3 bottom-2"></div><!-- Baş -->
+                <div class="w-8 h-3 border-t-2 border-l-2 border-indigo-600 rounded-tl-md anim-bridge"></div><!-- Kalça/Gövde -->
+                <div class="absolute right-2 top-1 text-[9px] text-indigo-400 font-bold">Bridge</div>
+            </div>`,
+            bosu: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-2 h-2 rounded-full bg-indigo-600 mb-0.5 anim-bosu"></div><!-- Kadın Sporcu -->
+                <div class="w-1 h-5 bg-indigo-600 anim-bosu"></div>
+                <div class="w-8 h-4 rounded-t-full bg-indigo-400 border border-indigo-500 mt-0.5"></div><!-- Bosu Topu -->
+            </div>`,
+            floorPress: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-8 h-1 bg-indigo-400 mt-4"></div><!-- Yer -->
+                <div class="w-6 h-1 bg-indigo-600 absolute bottom-3"></div><!-- Sırtüstü Gövde -->
+                <div class="w-1 h-3 bg-indigo-600 anim-press absolute bottom-4"></div><!-- Kollar/Dumbbell -->
+                <div class="w-3 h-1 bg-indigo-800 anim-press absolute bottom-7"></div>
+            </div>`,
+            row: `<div class="w-full h-full flex items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-2 h-2 rounded-full bg-indigo-600 mr-1"></div>
+                <div class="w-4 h-3 border-b-2 border-indigo-600 anim-row"></div><!-- Çekiş Hareketi -->
+                <div class="w-3 h-0.5 bg-indigo-400"></div>
+            </div>`,
+            shoulderPress: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-2 h-2 rounded-full bg-indigo-600 mb-1"></div>
+                <div class="flex space-x-3 anim-press"><!-- Dumbbell itiş -->
+                    <div class="w-1.5 h-1.5 bg-indigo-700 rounded-full"></div>
+                    <div class="w-1.5 h-1.5 bg-indigo-700 rounded-full"></div>
+                </div>
+            </div>`,
+            reformer: `<div class="w-full h-full flex flex-col items-center justify-end pb-1 relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-10 h-2 bg-indigo-200 border border-indigo-300 rounded mb-1"></div><!-- Reformer -->
+                <div class="w-6 h-1 bg-indigo-600 anim-legpress absolute bottom-3"></div><!-- Ayak İtişi -->
+            </div>`,
+            deadBug: `<div class="w-full h-full flex items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-6 h-1 bg-indigo-600"></div><!-- Sırtüstü Gövde -->
+                <div class="w-3 h-3 border-t-2 border-r-2 border-indigo-600 anim-bug"></div><!-- Havada Uzuvlar -->
+            </div>`,
+            birdDog: `<div class="w-full h-full flex items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
+                <div class="w-6 h-2 border-b-2 border-indigo-600 rounded-b anim-bosu"></div><!-- Emekleme ve Uzama -->
+            </div>`
+        };
+
         const workouts = {
             day1: [
-                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu alt vücut kas kütlesi geliştirir.', videoId: 'yZ8XbZ_Yn6A' },
-                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı doğrudan hedefler.', videoId: 'fN7LId7vTIE' },
-                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun mavi/yuvarlak kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ergoterapist onaylı derin stabilizasyon.', videoId: 'v8Uf8N_U-wU' }
+                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu alt vücut kas kütlesi geliştirir.', icon: 'legPress' },
+                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı doğrudan hedefler.', icon: 'gluteBridge' },
+                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun mavi/yuvarlak kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ergoterapist onaylı derin stabilizasyon.', icon: 'bosu' }
             ],
             day2: [
-                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken çift dumbbell\'ı yukarı doğru itin. Beliniz yerde sabit kaldığı için APT kavisini korur.', videoId: 'uMIzZ-K8eHw' },
-                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Dik durarak kabloyu karnınıza çekin ve kürek kemiklerinizi sıkıştırın. Masa başı çalışan kadınlar için ideal postür egzersizi.', videoId: 'GZbfZ033f74' },
-                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik sehpada oturarak dumbbell\'ları yukarı itin. Oturmak bel omurlarını tamamen güvenceye alır.', videoId: 'HzIiF_v_LzE' }
+                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken çift dumbbell\'ı yukarı doğru itin. Beliniz yerde sabit kaldığı için APT kavisini korur.', icon: 'floorPress' },
+                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Dik durarak kabloyu karnınıza çekin ve kürek kemiklerinizi sıkıştırın. Masa başı çalışan kadınlar için ideal postür egzersizi.', icon: 'row' },
+                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik sehpada oturarak dumbbell\'ları yukarı itin. Oturmak bel omurlarını tamamen güvenceye alır.', icon: 'shoulderPress' }
             ],
             day3: [
-                { id: 'd3_1', name: 'Reformer Pilates Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı itin. Yay direnciyle yerçekimsiz ve eklem dostu kas aktivasyonu sağlar.', videoId: '98Z5P_uU0l8' },
-                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü kontrollü uzuv uzatma. Belinizi matın içine doğru kuvvetlice presleyin. APT postürünü nötralize eden en etkili kadın core hareketidir.', videoId: 'g_7M9vI-B0w' },
-                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak yüzeyine koyup emekleme pozisyonu alın. Dengenizi bozmadan zıt kol ve bacağı düz uzatın.', videoId: '9s6-B-Csh6E' }
+                { id: 'd3_1', name: 'Reformer Pilates Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı itin. Yay direnciyle yerçekimsiz ve eklem dostu kas aktivasyonu sağlar.', icon: 'reformer' },
+                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü kontrollü uzuv uzatma. Belinizi matın içine doğru kuvvetlice presleyin. APT postürünü nötralize eden en etkili kadın core hareketidir.', icon: 'deadBug' },
+                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak yüzeyine koyup emekleme pozisyonu alın. Dengenizi bozmadan zıt kol ve bacağı düz uzatın.', icon: 'birdDog' }
             ]
         };
 
@@ -114,15 +205,15 @@
                 card.className = `exercise-card bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col space-y-3 ${isDone ? 'completed' : ''}`;
                 
                 card.innerHTML = `
-                    <div class="flex flex-col space-y-2">
-                        <div class="flex justify-between items-start">
-                            <h4 class="font-bold text-gray-800 text-sm">${ex.name}</h4>
-                            <p class="text-xs text-indigo-600 font-bold shrink-0">${ex.sets} Set x ${ex.reps}</p>
+                    <div class="flex space-x-3">
+                        <!-- Tamamen Kod Tabanlı CSS Canlandırmalı Alan -->
+                        <div class="w-16 h-16 shrink-0 overflow-hidden">
+                            ${movingIcons[ex.icon]}
                         </div>
-                        <p class="text-[11px] text-gray-500 leading-tight">${ex.desc}</p>
-                        
-                        <div class="w-full aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200 mt-1">
-                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/${ex.videoId}?rel=0&modestbranding=1" title="${ex.name}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="flex-1">
+                            <h4 class="font-bold text-gray-800 text-sm">${ex.name}</h4>
+                            <p class="text-xs text-indigo-600 font-bold mb-0.5">${ex.sets} Set x ${ex.reps}</p>
+                            <p class="text-[11px] text-gray-500 leading-tight">${ex.desc}</p>
                         </div>
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
