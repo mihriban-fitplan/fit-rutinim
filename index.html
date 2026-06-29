@@ -1,299 +1,49 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitRutinim - Kişisel Spor Takibi</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .exercise-card { transition: all 0.2s ease; }
-        .completed { background-color: #f0fdf4; border-color: #4ade80; }
-        
-        /* Basit Kadın Figürü GIF Hissiyatı Veren CSS Animasyonları */
-        @keyframes legPressAnim {
-            0%, 100% { transform: scaleX(1) translateX(0); }
-            50% { transform: scaleX(0.5) translateX(-8px); }
-        }
-        @keyframes bridgeAnim {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-        @keyframes bosuAnim {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-2px) rotate(3deg); }
-        }
-        @keyframes pressAnim {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-        @keyframes rowAnim {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-10px); }
-        }
-        @keyframes bugAnim {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-10deg); }
-        }
+<svg viewBox="0 0 120 120" width="100%" height="100%" style="background-color: #1e2330; border-radius: 12px; display: block; margin: auto;">
+  <!-- Zemin Çizgisi -->
+  <line x1="10" y1="95" x2="110" y2="95" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- HAREKETLİ KADIN FİGÜRÜ (Glute Bridge Örneği) -->
+  <g>
+    <!-- Animasyon: Kalçayı ve gövdeyi yukarı/aşağı pürüzsüzce hareket ettirir -->
+    <animateTransform 
+      attributeName="transform" 
+      type="translate" 
+      values="0,0; 0,-18; 0,0" 
+      dur="2.5s" 
+      repeatCount="indefinite" 
+      type="smooth"/>
+      
+    <!-- Baş ve Topuz Saç Detayı -->
+    <circle cx="30" cy="85" r="7" fill="#fbcfe8"/>
+    <circle cx="24" cy="81" r="4" fill="#db2777"/><!-- Saç Topuzu -->
+    
+    <!-- Anatomik Orantılı Gövde -->
+    <path d="M37 86 Q 55 86 65 70" fill="none" stroke="#4f46e5" stroke-width="7" stroke-linecap="round"/>
+    
+    <!-- Karın Bölgesi Destek Çizgisi -->
+    <path d="M37 86 Q 52 80 65 70" fill="none" stroke="#6366f1" stroke-width="3"/>
+  </g>
 
-        .anim-legpress { animation: legPressAnim 2s infinite ease-in-out; }
-        .anim-bridge { animation: bridgeAnim 2s infinite ease-in-out; transform-origin: bottom; }
-        .anim-bosu { animation: bosuAnim 1.5s infinite ease-in-out; }
-        .anim-press { animation: pressAnim 1.8s infinite ease-in-out; }
-        .anim-row { animation: rowAnim 2s infinite ease-in-out; }
-        .anim-bug { animation: bugAnim 1.5s infinite ease-in-out; transform-origin: center; }
-    </style>
-</head>
-<body class="bg-gray-50 font-sans pb-24">
+  <!-- Sabit Kalan Bacaklar (Orantılı Diz ve Ayak Bileği Ekleyerek) -->
+  <g>
+    <!-- Üst Bacak / Diz -->
+    <line x1="65" y1="70" x2="80" y2="52" stroke="#4f46e5" stroke-width="6" stroke-linecap="round">
+      <animate attributeName="y2" values="52;34;52" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="80;75;80" dur="2.5s" repeatCount="indefinite"/>
+    </line>
+    <!-- Alt Bacak / Ayak -->
+    <line x1="80" y1="52" x2="85" y2="95" stroke="#6366f1" stroke-width="5" stroke-linecap="round">
+      <animate attributeName="x1" values="80;75;80" dur="2.5s" repeatCount="indefinite"/>
+      <animate attributeName="y1" values="52;34;52" dur="2.5s" repeatCount="indefinite"/>
+    </line>
+  </g>
 
-    <!-- Header -->
-    <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-50">
-        <h1 class="text-xl font-bold text-center">FitRutinim</h1>
-        <p class="text-xs text-center text-indigo-200">Kas Kütlesi, Denge & APT Postür Desteği</p>
-    </header>
-
-    <main class="max-w-md mx-auto p-4">
-        
-        <!-- Gün Seçimi -->
-        <div class="flex space-x-2 mb-4 bg-white p-1 rounded-lg shadow-sm">
-            <button onclick="switchDay('day1')" id="btn-day1" class="flex-1 py-2 text-xs font-bold rounded-md bg-indigo-600 text-white">1. Gün: Alt & APT</button>
-            <button onclick="switchDay('day2')" id="btn-day2" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">2. Gün: Üst & Postür</button>
-            <button onclick="switchDay('day3')" id="btn-day3" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">3. Gün: Tüm Vücut</button>
-        </div>
-
-        <!-- Rutin Bölümü -->
-        <div id="program-section">
-            
-            <!-- Kas Zorlama Kılavuzu -->
-            <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl mb-3 text-xs text-indigo-900">
-                <span class="font-bold">🔥 Doğru Ağırlık Seçimi:</span> Set bittiğinde "nizami formda en fazla 2-3 tekrar daha yapabilirdim" hissetmelisiniz. Set aralarında <strong>60-90 sn</strong> dinlenin.
-            </div>
-
-            <!-- Isınma Kartı -->
-            <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl mb-4 text-xs space-y-1.5">
-                <div class="font-bold text-amber-800 flex items-center">🏃‍♀️ Sabit Isınma Protokolü (7 dk)</div>
-                <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-amber-900 font-bold">Hız: 4.5-5.0 km/s | Eğim: %1</span> (Hafif Başlangıç)</p>
-                <p class="text-gray-700 font-medium">• 3-7 dk: <span class="text-amber-900 font-bold">Hız: 5.3-5.8 km/s | Eğim: %2.5-%3</span> (Kalça Aktif/Tempolu)</p>
-                <p class="text-gray-500 italic mt-1">*Bant sonrası 1-2 dk Couch Stretch & Kedi-Deve esnemesi yapınız (APT için).</p>
-            </div>
-
-            <!-- Hareket Listesi -->
-            <div id="workout-list" class="space-y-4"></div>
-
-            <!-- Soğuma Kartı -->
-            <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl mt-4 text-xs space-y-1.5">
-                <div class="font-bold text-blue-800 flex items-center">🧘‍♀️ Sabit Soğuma Protokolü (5 dk)</div>
-                <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-blue-900 font-bold">Hız: 4.2-4.5 km/s | Eğim: %1.5</span> (Yavaşlama)</p>
-                <p class="text-gray-700 font-medium">• 3-5 dk: <span class="text-blue-900 font-bold">Hız: 3.5-4.0 km/s | Eğim: %0</span> (Sakinleşme)</p>
-                <p class="text-gray-500 italic mt-1">*Bant sonrası mat üzerinde 2-3 dk hafif tüm vücut statik esneme yapabilirsiniz.</p>
-            </div>
-        </div>
-
-        <!-- Grafik Bölümü -->
-        <div id="graph-section" class="hidden bg-white p-4 rounded-xl shadow-sm mt-2">
-            <h3 class="text-sm font-bold text-gray-800 mb-4">Haftalık Ağırlık Gelişimi</h3>
-            <canvas id="progressChart" width="400" height="250"></canvas>
-        </div>
-
-    </main>
-
-    <!-- Nav Bar -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 flex justify-around max-w-md mx-auto shadow-lg z-50">
-        <button onclick="showSection('program')" class="flex flex-col items-center text-indigo-600 font-medium text-xs">
-            <span class="text-lg">🏋️‍♀️</span><span>Programım</span>
-        </button>
-        <button onclick="showSection('graph')" class="flex flex-col items-center text-gray-500 font-medium text-xs">
-            <span class="text-lg">📈</span><span>Gelişimim</span>
-        </button>
-    </nav>
-
-    <script>
-        // Tamamen kod tabanlı animasyonlu kadın figürü şablonları
-        const movingIcons = {
-            legPress: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-2 h-2 rounded-full bg-indigo-600 mb-1"></div><!-- Baş -->
-                <div class="w-6 h-1 bg-indigo-600 rounded"></div><!-- Gövde -->
-                <div class="w-6 h-1 bg-indigo-600 rounded mt-1 origin-left anim-legpress"></div><!-- Bacaklar -->
-                <div class="absolute right-2 bottom-2 text-[9px] text-indigo-400 font-bold">Leg Press</div>
-            </div>`,
-            gluteBridge: `<div class="w-full h-full flex flex-col items-center justify-end pb-2 relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-2 h-2 rounded-full bg-indigo-600 absolute left-3 bottom-2"></div><!-- Baş -->
-                <div class="w-8 h-3 border-t-2 border-l-2 border-indigo-600 rounded-tl-md anim-bridge"></div><!-- Kalça/Gövde -->
-                <div class="absolute right-2 top-1 text-[9px] text-indigo-400 font-bold">Bridge</div>
-            </div>`,
-            bosu: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-2 h-2 rounded-full bg-indigo-600 mb-0.5 anim-bosu"></div><!-- Kadın Sporcu -->
-                <div class="w-1 h-5 bg-indigo-600 anim-bosu"></div>
-                <div class="w-8 h-4 rounded-t-full bg-indigo-400 border border-indigo-500 mt-0.5"></div><!-- Bosu Topu -->
-            </div>`,
-            floorPress: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-8 h-1 bg-indigo-400 mt-4"></div><!-- Yer -->
-                <div class="w-6 h-1 bg-indigo-600 absolute bottom-3"></div><!-- Sırtüstü Gövde -->
-                <div class="w-1 h-3 bg-indigo-600 anim-press absolute bottom-4"></div><!-- Kollar/Dumbbell -->
-                <div class="w-3 h-1 bg-indigo-800 anim-press absolute bottom-7"></div>
-            </div>`,
-            row: `<div class="w-full h-full flex items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-2 h-2 rounded-full bg-indigo-600 mr-1"></div>
-                <div class="w-4 h-3 border-b-2 border-indigo-600 anim-row"></div><!-- Çekiş Hareketi -->
-                <div class="w-3 h-0.5 bg-indigo-400"></div>
-            </div>`,
-            shoulderPress: `<div class="w-full h-full flex flex-col items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-2 h-2 rounded-full bg-indigo-600 mb-1"></div>
-                <div class="flex space-x-3 anim-press"><!-- Dumbbell itiş -->
-                    <div class="w-1.5 h-1.5 bg-indigo-700 rounded-full"></div>
-                    <div class="w-1.5 h-1.5 bg-indigo-700 rounded-full"></div>
-                </div>
-            </div>`,
-            reformer: `<div class="w-full h-full flex flex-col items-center justify-end pb-1 relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-10 h-2 bg-indigo-200 border border-indigo-300 rounded mb-1"></div><!-- Reformer -->
-                <div class="w-6 h-1 bg-indigo-600 anim-legpress absolute bottom-3"></div><!-- Ayak İtişi -->
-            </div>`,
-            deadBug: `<div class="w-full h-full flex items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-6 h-1 bg-indigo-600"></div><!-- Sırtüstü Gövde -->
-                <div class="w-3 h-3 border-t-2 border-r-2 border-indigo-600 anim-bug"></div><!-- Havada Uzuvlar -->
-            </div>`,
-            birdDog: `<div class="w-full h-full flex items-center justify-center relative bg-indigo-50 rounded-lg border border-indigo-100">
-                <div class="w-6 h-2 border-b-2 border-indigo-600 rounded-b anim-bosu"></div><!-- Emekleme ve Uzama -->
-            </div>`
-        };
-
-        const workouts = {
-            day1: [
-                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu alt vücut kas kütlesi geliştirir.', icon: 'legPress' },
-                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı doğrudan hedefler.', icon: 'gluteBridge' },
-                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun mavi/yuvarlak kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ergoterapist onaylı derin stabilizasyon.', icon: 'bosu' }
-            ],
-            day2: [
-                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken çift dumbbell\'ı yukarı doğru itin. Beliniz yerde sabit kaldığı için APT kavisini korur.', icon: 'floorPress' },
-                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Dik durarak kabloyu karnınıza çekin ve kürek kemiklerinizi sıkıştırın. Masa başı çalışan kadınlar için ideal postür egzersizi.', icon: 'row' },
-                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik sehpada oturarak dumbbell\'ları yukarı itin. Oturmak bel omurlarını tamamen güvenceye alır.', icon: 'shoulderPress' }
-            ],
-            day3: [
-                { id: 'd3_1', name: 'Reformer Pilates Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı itin. Yay direnciyle yerçekimsiz ve eklem dostu kas aktivasyonu sağlar.', icon: 'reformer' },
-                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü kontrollü uzuv uzatma. Belinizi matın içine doğru kuvvetlice presleyin. APT postürünü nötralize eden en etkili kadın core hareketidir.', icon: 'deadBug' },
-                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak yüzeyine koyup emekleme pozisyonu alın. Dengenizi bozmadan zıt kol ve bacağı düz uzatın.', icon: 'birdDog' }
-            ]
-        };
-
-        let currentDay = 'day1';
-        let myChart;
-
-        window.onload = function() {
-            renderWorkout(currentDay);
-            initChart();
-        };
-
-        function switchDay(day) {
-            currentDay = day;
-            ['day1', 'day2', 'day3'].forEach(d => {
-                const btn = document.getElementById(`btn-${d}`);
-                btn.className = d === day ? "flex-1 py-2 text-xs font-bold rounded-md bg-indigo-600 text-white" : "flex-1 py-2 text-xs font-bold rounded-md text-gray-600 bg-transparent";
-            });
-            renderWorkout(day);
-        }
-
-        function renderWorkout(day) {
-            const listContainer = document.getElementById('workout-list');
-            listContainer.innerHTML = '';
-
-            workouts[day].forEach(ex => {
-                const savedWeight = localStorage.getItem(`weight_${ex.id}`) || '';
-                const isDone = localStorage.getItem(`done_${ex.id}`) === 'true';
-
-                const card = document.createElement('div');
-                card.id = `card-${ex.id}`;
-                card.className = `exercise-card bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col space-y-3 ${isDone ? 'completed' : ''}`;
-                
-                card.innerHTML = `
-                    <div class="flex space-x-3">
-                        <!-- Tamamen Kod Tabanlı CSS Canlandırmalı Alan -->
-                        <div class="w-16 h-16 shrink-0 overflow-hidden">
-                            ${movingIcons[ex.icon]}
-                        </div>
-                        <div class="flex-1">
-                            <h4 class="font-bold text-gray-800 text-sm">${ex.name}</h4>
-                            <p class="text-xs text-indigo-600 font-bold mb-0.5">${ex.sets} Set x ${ex.reps}</p>
-                            <p class="text-[11px] text-gray-500 leading-tight">${ex.desc}</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-gray-100">
-                        <div class="flex items-center space-x-2">
-                            <label class="text-[11px] text-gray-600">Ağırlık (kg):</label>
-                            <input type="number" id="input-${ex.id}" value="${savedWeight}" placeholder="0" onchange="saveProgress('${ex.id}')" class="w-14 p-1 border border-gray-300 rounded text-center text-xs focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <button onclick="toggleComplete('${ex.id}')" id="btn-check-${ex.id}" class="px-3 py-1 rounded-lg text-xs font-medium ${isDone ? 'bg-green-600 text-white' : 'bg-gray-100 text-gray-700'}">
-                            ${isDone ? 'Tamamlandı ✓' : 'Yapıldı'}
-                        </button>
-                    </div>
-                `;
-                listContainer.appendChild(card);
-            });
-        }
-
-        function toggleComplete(id) {
-            const card = document.getElementById(`card-${id}`);
-            const btn = document.getElementById(`btn-check-${id}`);
-            const isDone = localStorage.getItem(`done_${id}`) === 'true';
-            
-            if(!isDone) {
-                card.classList.add('completed');
-                btn.className = "px-3 py-1 rounded-lg text-xs font-medium bg-green-600 text-white";
-                btn.innerText = "Tamamlandı ✓";
-                localStorage.setItem(`done_${id}`, 'true');
-            } else {
-                card.classList.remove('completed');
-                btn.className = "px-3 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-700";
-                btn.innerText = "Yapıldı";
-                localStorage.setItem(`done_${id}`, 'false');
-            }
-        }
-
-        function saveProgress(id) {
-            const val = document.getElementById(`input-${id}`).value;
-            localStorage.setItem(`weight_${id}`, val);
-            updateChartData();
-        }
-
-        function showSection(section) {
-            if(section === 'program') {
-                document.getElementById('program-section').classList.remove('hidden');
-                document.getElementById('graph-section').classList.add('hidden');
-            } else {
-                document.getElementById('program-section').classList.add('hidden');
-                document.getElementById('graph-section').classList.remove('hidden');
-                updateChartData();
-            }
-        }
-
-        function initChart() {
-            const ctx = document.getElementById('progressChart').getContext('2d');
-            myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['1. Hafta', '2. Hafta', '3. Hafta', '4. Hafta'],
-                    datasets: [{
-                        label: 'Kaldırılan Ortalama Ağırlık (kg)',
-                        data: [10, 12, 14, 15],
-                        borderColor: '#4f46e5',
-                        tension: 0.1,
-                        fill: false
-                    }]
-                }
-            });
-        }
-
-        function updateChartData() {
-            let totalWeight = 0;
-            let count = 0;
-            ['d1_1', 'd1_2', 'd2_1', 'd2_3'].forEach(id => {
-                const w = parseFloat(localStorage.getItem(`weight_${id}`));
-                if(w) { totalWeight += w; count++; }
-            });
-            if(count > 0) {
-                myChart.data.datasets[0].data[3] = (totalWeight / count).toFixed(1);
-                myChart.update();
-            }
-        }
-    </script>
-</body>
-</html>
+  <!-- Destek Alan Kollar -->
+  <line x1="37" y1="88" x2="60" y2="88" stroke="#312e81" stroke-width="4" stroke-linecap="round"/>
+  
+  <!-- Çalışan Kas Bölgesi Göstergesi (Kalça) -->
+  <circle cx="60" cy="74" r="5" fill="#f43f5e" opacity="0.8">
+    <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2.5s" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-18; 0,0" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>
