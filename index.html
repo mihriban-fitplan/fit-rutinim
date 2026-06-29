@@ -1,378 +1,497 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitRutinim - Premium Egzersiz Takibi</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        body { background-color: #f8fafc; color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        .tab-active { border-bottom: 3px solid #6366f1; color: #6366f1; font-weight: 700; }
-        
-        /* Premium Kadın Sporcu Animasyonları (At Kuyruğu & Estetik Gövde) */
-        @keyframes legPressMovement {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(-14px, 8px); }
-        }
-        @keyframes gluteBridgeMovement {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-18px); }
-        }
-        @keyframes bosuMovement {
-            0%, 100% { transform: rotate(-2.5deg); }
-            50% { transform: rotate(2.5deg); }
-        }
-        @keyframes floorPressMovement {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-14px); }
-        }
-        @keyframes rowMovement {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(-14px); }
-        }
-        @keyframes shoulderMovement {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-16px); }
-        }
-        @keyframes ponytailSwing {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(-15deg); }
-        }
-        @keyframes musclePulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.4); opacity: 0.95; }
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitRutinim - Premium Egzersiz Takibi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #f8fafc; font-family: 'Inter', sans-serif; color: #0f172a; max-width: 480px; margin: 0 auto; min-height: 100vh; }
 
-        .anim-legpress { animation: legPressMovement 2.2s infinite ease-in-out; }
-        .anim-bridge { animation: gluteBridgeMovement 2.4s infinite ease-in-out; }
-        .anim-bosu { animation: bosuMovement 1.8s infinite ease-in-out; transform-origin: 50px 75px; }
-        .anim-press { animation: floorPressMovement 2s infinite ease-in-out; }
-        .anim-row { animation: rowMovement 2.2s infinite ease-in-out; }
-        .anim-shoulder { animation: shoulderMovement 2s infinite ease-in-out; }
-        
-        .ponytail { animation: ponytailSwing 2s infinite ease-in-out; transform-origin: 26px 33px; }
-        .ponytail-bridge { animation: ponytailSwing 2.4s infinite ease-in-out; transform-origin: 19px 62px; }
-        .ponytail-bosu { animation: ponytailSwing 1.8s infinite ease-in-out; transform-origin: 45px 24px; }
-        
-        .muscle-glow { animation: musclePulse 1.4s infinite ease-in-out; transform-origin: center; }
-    </style>
+/* Yenilenen Ferah ve Aydınlık Üst Menü */
+.top-nav { background: #ffffff; padding: 14px 16px 0; position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #e2e8f0; box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+.day-tabs { display: flex; overflow-x: auto; scrollbar-width: none; }
+.day-tabs::-webkit-scrollbar { display: none; }
+.tab { flex-shrink:0; padding:10px 14px 12px; font-size:12px; font-weight:600; color:#64748b; cursor:pointer; border-bottom:3px solid transparent; transition:all .2s; white-space:nowrap; background:none; border-top:none; border-left:none; border-right:none; font-family:'Inter',sans-serif; }
+.tab.active { color:#6366f1; border-bottom-color:#6366f1; font-weight: 700; }
+
+.page { display:none; padding-bottom:60px; }
+.page.active { display:block; }
+
+.day-banner { padding:18px 16px 14px; border-bottom:1px solid #e2e8f0; background: #ffffff; }
+.day-lbl { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-bottom:4px; }
+.day-name { font-size:20px; font-weight:700; margin-bottom:10px; color: #0f172a; }
+.chips { display:flex; gap:6px; flex-wrap:wrap; }
+.chip { background:#f1f5f9; border-radius:20px; padding:3px 10px; font-size:11px; font-weight:600; color:#475569; border: 1px solid #e2e8f0; }
+
+.sec { padding:18px 16px 6px; font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#94a3b8; }
+
+/* Aydınlık Satır Kartları */
+.ex-row { display:flex; align-items:center; gap:14px; padding:14px 16px; border-bottom:1px solid #f1f5f9; cursor:pointer; transition:background .15s; background: #ffffff; }
+.ex-row:hover, .ex-row:active { background:#f8fafc; }
+.ex-thumb { width:44px; height:44px; flex-shrink:0; background:#f8fafc; border-radius:12px; overflow:hidden; display:flex; align-items:center; justify-content:center; font-size:20px; border: 1px solid #e2e8f0; }
+.ex-text { flex:1; min-width:0; }
+.ex-name { font-size:15px; font-weight:600; color:#0f172a; margin-bottom:2px; }
+.ex-sub { font-size:12px; color:#475569; margin-bottom:2px; }
+.ex-warn { font-size:11px; color:#e11d48; font-weight:600; }
+.ex-arrow { color:#cbd5e1; font-size:22px; flex-shrink:0; margin-left: auto; }
+
+.alert { margin:12px 16px; border-radius:12px; padding:12px 14px; font-size:12px; line-height:1.6; font-weight:500; }
+.aw { background:#fff7ed; color:#c2410c; border: 1px solid #ffedd5; }
+.ai { background:#eef2ff; color:#3730a3; border: 1px solid #e0e7ff; }
+
+/* MODAL (Açılır Detay Penceresi) */
+.overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,0.4); z-index:200; align-items:flex-end; justify-content:center; max-width:480px; margin:0 auto; backdrop-filter: blur(8px); }
+.overlay.open { display:flex; }
+.modal { background:#ffffff; border-radius:24px 24px 0 0; width:100%; max-height:92vh; overflow-y:auto; padding-bottom:28px; border-top: 1px solid #e2e8f0; box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1); }
+.modal-hdr { display:flex; justify-content:space-between; align-items:center; padding:18px 18px 14px; border-bottom:1px solid #f1f5f9; }
+.modal-title { font-size:18px; font-weight:700; color: #0f172a; }
+.modal-close { background:#f1f5f9; border:none; color:#475569; width:32px; height:32px; border-radius:50%; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-weight: bold; }
+.modal-stats { display:flex; border-bottom:1px solid #f1f5f9; background: #fafafa; }
+.mst { flex:1; text-align:center; padding:12px 6px; border-right:1px solid #f1f5f9; }
+.mst:last-child { border-right:none; }
+.mst-v { font-size:18px; font-weight:700; color: #6366f1; margin-bottom:2px; }
+.mst-l { font-size:10px; color:#94a3b8; font-weight:600; letter-spacing:1px; text-transform:uppercase; }
+
+/* KADIN SPORCU ANİMASYON KUTUSU */
+.big-anim-wrap { margin: 16px; border-radius: 16px; background: #1e2330; overflow: hidden; border: 1px solid #e2e8f0; height: 180px; display: flex; align-items: center; justify-content: center; }
+.big-anim-wrap svg { width: 100%; height: 100%; display: block; }
+
+/* AYRI ÖN / ARKA BÖLMELİ KAS DİYAGRAMI */
+.diagram-wrap { display:flex; gap:16px; justify-content:center; padding:16px 16px 8px; border-bottom: 1px solid #f1f5f9; }
+.diagram-wrap > div { flex:1; background: #f8fafc; border-radius: 12px; padding: 8px; border: 1px solid #e2e8f0; }
+.diagram-lbl { font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#94a3b8; text-align:center; margin-bottom:6px; }
+.diagram-wrap svg { width:100%; max-width:90px; display:block; margin:0 auto; height: 110px; }
+
+/* AI REHBER KUTUSU */
+.ai-section { margin:14px 16px 12px; background:#f0fdf4; border-radius:16px; overflow:hidden; border: 1px solid #dcfce7; }
+.ai-header { display:flex; align-items:center; gap:8px; padding:12px 14px; background:#bbf7d0; border-bottom:1px solid #dcfce7; }
+.ai-icon { width:24px; height:24px; border-radius:8px; background:linear-gradient(135deg,#22c55e,#16a34a); display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; color: white; }
+.ai-hdr-txt { font-size:11px; font-weight:700; color:#14532d; letter-spacing:1px; text-transform:uppercase; }
+.ai-body { padding:14px; font-size:13px; line-height:1.6; color:#166534; min-height:60px; font-weight: 500; }
+
+/* KAS ETİKETLERİ */
+.muscle-chips { display:flex; flex-wrap:wrap; gap:6px; padding:14px 16px 4px; }
+.muscle-chip { border-radius:20px; padding:4px 12px; font-size:11px; font-weight:600; }
+.mc-primary { background:#fee2e2; color:#ef4444; border: 1px solid #fecaca; }
+.mc-secondary { background:#e0e7ff; color:#4f46e5; border: 1px solid #c7d2fe; }
+
+/* Animasyon Ritimleri */
+@keyframes p-legpress { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-12px, 7px); } }
+@keyframes p-bridge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes p-bosu { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@keyframes p-press { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+@keyframes p-row { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-14px); } }
+@keyframes p-shoulder { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes tailSwing { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-16deg); } }
+@keyframes glowMuscle { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.35); opacity: 0.95; } }
+
+.anim-legpress { animation: p-legpress 2.2s infinite ease-in-out; }
+.anim-bridge { animation: p-bridge 2.4s infinite ease-in-out; }
+.anim-bosu { animation: p-bosu 1.8s infinite ease-in-out; transform-origin: 50px 75px; }
+.anim-press { animation: p-press 2s infinite ease-in-out; }
+.anim-row { animation: p-row 2.2s infinite ease-in-out; }
+.anim-shoulder { animation: p-shoulder 2s infinite ease-in-out; }
+
+.ponytail { animation: tailSwing 2s infinite ease-in-out; transform-origin: 26px 33px; }
+.ponytail-bridge { animation: tailSwing 2.4s infinite ease-in-out; transform-origin: 19px 62px; }
+.ponytail-bosu { animation: tailSwing 1.8s infinite ease-in-out; transform-origin: 45px 24px; }
+.muscle-glow { animation: glowMuscle 1.4s infinite ease-in-out; transform-origin: center; }
+</style>
 </head>
-<body class="pb-12">
+<body>
 
-    <!-- Header -->
-    <div class="bg-white p-4 text-center border-b border-slate-200 shadow-sm">
-        <h1 class="text-xl font-bold tracking-tight text-slate-900">FitRutinim</h1>
-        <p class="text-xs text-slate-500 mt-0.5 font-medium">Kas Kütlesi, Denge & APT Postür Desteği</p>
+<div class="top-nav">
+  <div class="day-tabs">
+    <button class="tab active" id="b0" onclick="showDay(0)">🏋️ Gün 1 — Alt Vücut</button>
+    <button class="tab" id="b1" onclick="showDay(1)">💪 Gün 2 — Üst Vücut</button>
+    <button class="tab" id="b2" onclick="showDay(2)">🔙 Gün 3 — Sırt</button>
+  </div>
+</div>
+
+<div class="page active" id="d0">
+  <div class="day-banner">
+    <div class="day-lbl" style="color:#6366f1">Pazartesi / Çarşamba</div>
+    <div class="day-name">Alt Vücut &amp; Core · Salon</div>
+    <div class="chips"><span class="chip">~48 dk</span><span class="chip">Makine · Kablo</span><span class="chip">7 Hareket + Kardio</span></div>
+  </div>
+
+  <div class="sec">🔥 ISINMA</div>
+  <div class="ex-row" onclick="open_ex('treadmill_warmup')">
+    <div class="ex-thumb">🚶</div>
+    <div class="ex-text"><div class="ex-name">Yürüyüş Bandı — Isınma</div><div class="ex-sub">8 dk · Hız: 5-5.5 km/s · Eğim: %2-3</div><div class="ex-warn" style="color:#10b981">Pelvis nötr · Gövde dik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">⚖️ Denge Çalışması</div>
+  <div class="ex-row" onclick="open_ex('singleleg')">
+    <div class="ex-thumb">⚖️</div>
+    <div class="ex-text"><div class="ex-name">Tek Ayak Durma</div><div class="ex-sub">2 Set · 20-30 sn / ayak</div><div class="ex-warn">⚑ Ergoterapist önerisi</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('bosusquat')">
+    <div class="ex-thumb">⚖️</div>
+    <div class="ex-text"><div class="ex-name">Bosu Topu Squat</div><div class="ex-sub">2 Set · 10-12 Tekrar</div><div class="ex-warn">Dinamik propriosepsiyon</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Esneme</div>
+  <div class="ex-row" onclick="open_ex('hipflexor')">
+    <div class="ex-thumb">🧘</div>
+    <div class="ex-text"><div class="ex-name">Hip Flexor Stretch</div><div class="ex-sub">3 Set · 30 sn / taraf</div><div class="ex-warn">⚑ KRİTİK — asla atlama</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Bacak &amp; Kalça</div>
+  <div class="ex-row" onclick="open_ex('legcurl')">
+    <div class="ex-thumb">🦵</div>
+    <div class="ex-text"><div class="ex-name">Leg Curl</div><div class="ex-sub">3 Set · 12 Tekrar</div><div class="ex-warn">Hamstring = pelvik tilt düzeltir</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('legpress')">
+    <div class="ex-thumb">🦵</div>
+    <div class="ex-text"><div class="ex-name">Leg Press</div><div class="ex-sub">3 Set · 12 Tekrar</div><div class="ex-warn">⚑ Bel asla kalkmasın</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('hipadd')">
+    <div class="ex-thumb">🦵</div>
+    <div class="ex-text"><div class="ex-name">Hip Adduction Machine</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('kickback')">
+    <div class="ex-thumb">🍑</div>
+    <div class="ex-text"><div class="ex-name">Cable Glute Kickback</div><div class="ex-sub">3 Set · 12 Tekrar / taraf</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Core</div>
+  <div class="ex-row" onclick="open_ex('cablecrunch')">
+    <div class="ex-thumb">🎯</div>
+    <div class="ex-text"><div class="ex-name">Cable Crunch</div><div class="ex-sub">3 Set · 12 Tekrar</div><div class="ex-warn">Karın güçlendirme — yerde değil</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('pallofpress')">
+    <div class="ex-thumb">🎯</div>
+    <div class="ex-text"><div class="ex-name">Pallof Press</div><div class="ex-sub">3 Set · 12 Tekrar / taraf</div><div class="ex-warn">⚑ Pelvik stabilite — postür için kritik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">🏃 BİTİŞ</div>
+  <div class="ex-row" onclick="open_ex('treadmill_finish')">
+    <div class="ex-thumb">🏃</div>
+    <div class="ex-text"><div class="ex-name">Yürüyüş Bandı — Bitiş</div><div class="ex-sub">8 dk · Hız: 5.5-6 km/s · Eğim: %4-5</div><div class="ex-warn" style="color:#6366f1">Yağ yakma zonu · Gövde dik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="alert ai">💡 Toplam süre ~48 dk. Set arası 45-60 sn dinlenin. 4. haftadan sonra bitiş eğimini %6-7'ye çıkarabilirsiniz.</div>
+</div>
+
+<div class="page" id="d1">
+  <div class="day-banner">
+    <div class="day-lbl" style="color:#db2777">Salı / Cuma</div>
+    <div class="day-name">Üst Vücut &amp; Postür · Salon</div>
+    <div class="chips"><span class="chip">~48 dk</span><span class="chip">Makine · DB · Kablo</span><span class="chip">7 Hareket + Kardio</span></div>
+  </div>
+
+  <div class="sec">🔥 ISINMA</div>
+  <div class="ex-row" onclick="open_ex('treadmill_warmup')">
+    <div class="ex-thumb">🚶</div>
+    <div class="ex-text"><div class="ex-name">Yürüyüş Bandı — Isınma</div><div class="ex-sub">8 dk · Hız: 5-5.5 km/s · Eğim: %2-3</div><div class="ex-warn" style="color:#10b981">Pelvis nötr · Gövde dik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">⚖️ Denge Çalışması</div>
+  <div class="ex-row" onclick="open_ex('pillowhinge')">
+    <div class="ex-thumb">⚖️</div>
+    <div class="ex-text"><div class="ex-name">Denge Yastığı Hip Hinge</div><div class="ex-sub">2 Set · 10 Tekrar</div><div class="ex-warn">⚑ Pelvis kontrolü + denge</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('reformerbalance')">
+    <div class="ex-thumb">⚖️</div>
+    <div class="ex-text"><div class="ex-name">Reformer Core Press</div><div class="ex-sub">2 Set · 10-12 Tekrar</div><div class="ex-warn">Core stabilizasyon</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Postür — Önce Bunlar</div>
+  <div class="ex-row" onclick="open_ex('facepull')">
+    <div class="ex-thumb">💪</div>
+    <div class="ex-text"><div class="ex-name">Face Pull</div><div class="ex-sub">3 Set · 15 Tekrar</div><div class="ex-warn">⚑ EN ÖNEMLİ hareket — asla atlama</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('reversfly')">
+    <div class="ex-thumb">💪</div>
+    <div class="ex-text"><div class="ex-name">Reverse Fly Machine</div><div class="ex-sub">3 Set · 12 Tekrar</div><div class="ex-warn">Kürek kemiği + arka omuz</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Göğüs &amp; Omuz</div>
+  <div class="ex-row" onclick="open_ex('chestpress')">
+    <div class="ex-thumb">🏋️</div>
+    <div class="ex-text"><div class="ex-name">Chest Press Machine</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('arnold')">
+    <div class="ex-thumb">🏋️</div>
+    <div class="ex-text"><div class="ex-name">Arnold Press</div><div class="ex-sub">3 Set · 12 Tekrar</div><div class="ex-warn">⚑ Oturarak · Hafif ağırlık</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('lateralraise')">
+    <div class="ex-thumb">🏋️</div>
+    <div class="ex-text"><div class="ex-name">Dumbbell Lateral Raise</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Kol</div>
+  <div class="ex-row" onclick="open_ex('triceppushdown')">
+    <div class="ex-thumb">💪</div>
+    <div class="ex-text"><div class="ex-name">Tricep Pushdown</div><div class="ex-sub">3 Set · 12 Tekrar</div><div class="ex-warn">Arka kol güçlendirme</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('cablecurl')">
+    <div class="ex-thumb">💪</div>
+    <div class="ex-text"><div class="ex-name">Cable Curl</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">🏃 BİTİŞ</div>
+  <div class="ex-row" onclick="open_ex('treadmill_finish')">
+    <div class="ex-thumb">🏃</div>
+    <div class="ex-text"><div class="ex-name">Yürüyüş Bandı — Bitiş</div><div class="ex-sub">8 dk · Hız: 5.5-6 km/s · Eğim: %4-5</div><div class="ex-warn" style="color:#6366f1">Yağ yakma zonu · Gövde dik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="alert ai">💡 Face Pull → Reverse Fly sırası önemli. Önce postür kaslarını aktive edin.</div>
+</div>
+
+<div class="page" id="d2">
+  <div class="day-banner">
+    <div class="day-lbl" style="color:#2563eb">Perşembe / Cumartesi</div>
+    <div class="day-name">Sırt &amp; Fonksiyonel Güç · Salon</div>
+    <div class="chips"><span class="chip">~48 dk</span><span class="chip">Makine · DB</span><span class="chip">6 Hareket + Kardio</span></div>
+  </div>
+
+  <div class="sec">🔥 ISINMA</div>
+  <div class="ex-row" onclick="open_ex('treadmill_warmup')">
+    <div class="ex-thumb">🚶</div>
+    <div class="ex-text"><div class="ex-name">Yürüyüş Bandı — Isınma</div><div class="ex-sub">8 dk · Hız: 5-5.5 km/s · Eğim: %2-3</div><div class="ex-warn" style="color:#10b981">Pelvis nötr · Gövde dik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">⚖️ Denge Çalışması</div>
+  <div class="ex-row" onclick="open_ex('tandemwalk')">
+    <div class="ex-thumb">⚖️</div>
+    <div class="ex-text"><div class="ex-name">Tandem Yürüme</div><div class="ex-sub">2 Set · 10-12 adım</div><div class="ex-warn">⚑ Motor planlama</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('reformerlunge')">
+    <div class="ex-thumb">⚖️</div>
+    <div class="ex-text"><div class="ex-name">Reformer Lunge</div><div class="ex-sub">2 Set · 8-10 / bacak</div><div class="ex-warn">Tek bacak denge</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Sırt</div>
+  <div class="ex-row" onclick="open_ex('latpulldown')">
+    <div class="ex-thumb">🔙</div>
+    <div class="ex-text"><div class="ex-name">Lat Pulldown</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('seatedrow')">
+    <div class="ex-thumb">🔙</div>
+    <div class="ex-text"><div class="ex-name">Seated Row</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('singlerow')">
+    <div class="ex-thumb">🔙</div>
+    <div class="ex-text"><div class="ex-name">Single Arm DB Row</div><div class="ex-sub">3 Set · 10 Tekrar / taraf</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Göğüs &amp; Bacak</div>
+  <div class="ex-row" onclick="open_ex('machinefly')">
+    <div class="ex-thumb">🔙</div>
+    <div class="ex-text"><div class="ex-name">Machine Fly</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="ex-row" onclick="open_ex('legext')">
+    <div class="ex-thumb">🦵</div>
+    <div class="ex-text"><div class="ex-name">Leg Extension</div><div class="ex-sub">3 Set · 12 Tekrar</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Core</div>
+  <div class="ex-row" onclick="open_ex('abwheel')">
+    <div class="ex-thumb">🎯</div>
+    <div class="ex-text"><div class="ex-name">Ab Wheel</div><div class="ex-sub">3 Set · 10 Tekrar</div><div class="ex-warn">Diz altına pad — derin core</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">Soğuma</div>
+  <div class="ex-row" onclick="open_ex('piriformis')">
+    <div class="ex-thumb">🧘</div>
+    <div class="ex-text"><div class="ex-name">Piriformis & Hamstring Germe</div><div class="ex-sub">2 Set · 30 sn / taraf</div><div class="ex-warn">⚑ Sola da dikkat</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+
+  <div class="sec">🏃 BİTİŞ</div>
+  <div class="ex-row" onclick="open_ex('treadmill_finish')">
+    <div class="ex-thumb">🏃</div>
+    <div class="ex-text"><div class="ex-name">Yürüyüş Bandı — Bitiş</div><div class="ex-sub">8 dk · Hız: 5.5-6 km/s · Eğim: %4-5</div><div class="ex-warn" style="color:#6366f1">Yağ yakma zonu · Gövde dik</div></div>
+    <div class="ex-arrow">›</div>
+  </div>
+  <div class="alert ai">💡 Piriformis germesini bitişten önce yapın. L4-5 diskine en iyi iyileşme ortamını sağlar.</div>
+</div>
+
+<div class="overlay" id="modal" onclick="close_if_bg(event)">
+  <div class="modal" id="modal-inner">
+    <div class="modal-hdr">
+      <div class="modal-title" id="m-title">—</div>
+      <button class="modal-close" onclick="close_modal()">✕</button>
+    </div>
+    <div class="modal-stats">
+      <div class="mst"><div class="mst-v" id="m-set">3</div><div class="mst-l">Set</div></div>
+      <div class="mst"><div class="mst-v" id="m-rep">12</div><div class="mst-l">Tekrar</div></div>
+      <div class="mst"><div class="mst-v" id="m-eq">Makine</div><div class="mst-l">Ekipman</div></div>
     </div>
 
-    <!-- Üst Menü -->
-    <div class="bg-white flex text-center text-sm border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-        <button id="tab-day1" onclick="switchDay('day1')" class="flex-1 py-3 text-slate-500 tab-active">🏃‍♀️ 1. Gün: Alt & APT</button>
-        <button id="tab-day2" onclick="switchDay('day2')" class="flex-1 py-3 text-slate-500">💪 2. Gün: Üst & Postür</button>
-        <button id="tab-day3" onclick="switchDay('day3')" class="flex-1 py-3 text-slate-500">
-        🧘‍♀️ 3. Gün: Tüm Vücut</button>
+    <div class="big-anim-wrap" id="big-anim"></div>
+
+    <div class="diagram-wrap">
+      <div><div class="diagram-lbl">ÖN VÜCUT</div><svg id="d-front" viewBox="0 0 100 170"></svg></div>
+      <div><div class="diagram-lbl">ARKA VÜCUT</div><svg id="d-back" viewBox="0 0 100 170"></svg></div>
     </div>
 
-    <!-- Ana Panel -->
-    <main class="max-w-md mx-auto p-4 space-y-4">
-        
-        <div class="mb-1">
-            <h2 id="section-title" class="text-lg font-bold text-slate-900">Alt Vücut & Core • Salon</h2>
-            <p id="section-meta" class="text-xs text-slate-500 mt-0.5">~48 dk • Makine & Kablo • 3 Hareket + Kardiyo</p>
-        </div>
+    <div class="muscle-chips" id="m-chips"></div>
 
-        <!-- Isınma Protokolü -->
-        <div class="bg-amber-50/70 border border-amber-200/60 rounded-2xl p-4 shadow-sm">
-            <div class="text-[10px] font-bold text-amber-800 uppercase tracking-wider mb-1.5">🔥 Sabit Isınma Protokolü</div>
-            <h3 class="text-sm font-bold text-slate-900 mb-0.5">Yürüyüş Bandı</h3>
-            <p class="text-xs text-slate-600 mb-2.5">8 dk • Hız: 5-5.5 km/s • Eğim: %2-3</p>
-            <span class="text-[10px] bg-white text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg font-semibold shadow-2xs">Pelvis Nötr · Gövde Dik</span>
-        </div>
-
-        <!-- Hareket Kapsayıcı -->
-        <div id="workout-container" class="space-y-3"></div>
-
-    </main>
-
-    <!-- DETAY POPUP PENCERESİ (MODAL) -->
-    <div id="exercise-modal" class="fixed inset-0 bg-slate-900/40 z-50 flex items-center justify-center p-4 hidden backdrop-blur-md">
-        <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl relative border border-slate-100 max-h-[92vh] overflow-y-auto">
-            
-            <!-- Kapatma -->
-            <button onclick="closeModal()" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600 text-2xl font-bold bg-slate-50 w-9 h-9 rounded-full flex items-center justify-center z-50 border border-slate-100 shadow-2xs">×</button>
-            
-            <!-- Başlık ve Set Bilgileri -->
-            <div class="p-5 border-b border-slate-100 bg-slate-50/50">
-                <h3 id="modal-title" class="text-base font-bold text-slate-900 text-center">Egzersiz</h3>
-                <div class="flex justify-center space-x-10 text-center mt-4 text-xs">
-                    <div><div id="modal-sets" class="text-base font-bold text-indigo-600">3</div><div class="text-slate-400 text-[10px] font-bold tracking-wider">SET</div></div>
-                    <div><div id="modal-reps" class="text-base font-bold text-indigo-600">12</div><div class="text-slate-400 text-[10px] font-bold tracking-wider">TEKRAR</div></div>
-                    <div><div id="modal-equip" class="text-base font-bold text-indigo-600">Makine</div><div class="text-slate-400 text-[10px] font-bold tracking-wider">EKİPMAN</div></div>
-                </div>
-            </div>
-
-            <!-- Yeni Ultra-Estetik Kadın Figür Alanı -->
-            <div class="bg-[#1e2330] h-48 flex items-center justify-center p-2 relative border-b border-slate-100" id="modal-animation-box font-sans"></div>
-
-            <!-- İstediğin Ayrı Detaylı Kas Haritası Alanı -->
-            <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col items-center">
-                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-2.5">Çalışan Kas Bölgesi</div>
-                <div class="flex justify-center space-x-12 w-full h-28" id="modal-muscle-map"></div>
-            </div>
-
-            <!-- Açıklama Kısmı -->
-            <div class="p-5 bg-white">
-                <div class="bg-indigo-50/60 border border-indigo-100/70 p-3.5 rounded-2xl shadow-3xs">
-                    <div class="text-[10px] text-indigo-700 font-bold uppercase tracking-wider mb-1.5">✨ Nasıl Yapılır? · AI Kılavuzu</div>
-                    <p id="modal-desc" class="text-xs text-slate-700 leading-relaxed font-medium"></p>
-                </div>
-            </div>
-        </div>
+    <div class="ai-section">
+      <div class="ai-header">
+        <div class="ai-icon">✦</div>
+        <div class="ai-hdr-txt">Nasıl Yapılır? · AI Kılavuzu</div>
+      </div>
+      <div class="ai-body" id="ai-body"></div>
     </div>
+  </div>
+</div>
 
-    <script>
-        // İnce Bel, Atletik Hatlar ve Hareketli Şık At Kuyruğu İçeren Premium Kadın İllüstrasyonları
-        const svgs = {
-            legPress: `
-                <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <line x1="15" y1="85" x2="85" y2="15" stroke="#334155" stroke-width="2.5" stroke-dasharray="4 2"/>
-                    <circle cx="34" cy="36" r="5.5" fill="#fbcfe8"/><!-- Estetik Baş -->
-                    <!-- At Kuyruğu Saç (Sallanan) -->
-                    <path class="ponytail" d="M29 33 C 22 30, 16 34, 13 42 C 16 38, 22 36, 29 35" fill="#db2777"/>
-                    <!-- İnce Bel & Kıvrımlı Kadın Gövdesi -->
-                    <path d="M38 41 C 46 42, 48 50, 48 58" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/>
-                    <g class="anim-legpress">
-                        <!-- Kalça & Uyluk Kıvrımları -->
-                        <path d="M48 58 C 58 54, 66 46, 74 34" fill="none" stroke="#818cf8" stroke-width="4" stroke-linecap="round"/>
-                    </g>
-                    <line x1="70" y1="22" x2="80" y2="36" stroke="#f43f5e" stroke-width="4.5" stroke-linecap="round"/><!-- İtiş Platformu -->
-                </svg>`,
-            gluteBridge: `
-                <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <line x1="10" y1="75" x2="90" y2="75" stroke="#334155" stroke-width="2"/>
-                    <circle cx="25" cy="66" r="5.5" fill="#fbcfe8"/>
-                    <path class="ponytail-bridge" d="M20 63 C 14 60, 9 65, 6 72 C 9 68, 14 66, 20 65" fill="#db2777"/>
-                    <g class="anim-bridge">
-                        <!-- Kıvrımlı Atletik Kalça Köprüsü Hattı -->
-                        <path d="M31 68 C 44 68, 52 64, 62 50" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/>
-                        <path d="M62 50 C 68 58, 72 68, 76 75" fill="none" stroke="#818cf8" stroke-width="3.5" stroke-linecap="round"/>
-                    </g>
-                </svg>`,
-            bosu: `
-                <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <path d="M25 75 C 25 52, 75 52, 75 75 Z" fill="#3b82f6" opacity="0.65"/>
-                    <line x1="15" y1="75" x2="85" y2="75" stroke="#1d4ed8" stroke-width="3.5"/>
-                    <g class="anim-bosu">
-                        <circle cx="50" cy="28" r="5.5" fill="#fbcfe8"/>
-                        <path class="ponytail-bosu" d="M45 25 C 39 22, 34 26, 31 33 C 34 29, 39 28, 45 27" fill="#db2777"/>
-                        <!-- Dik ve Nötr Postür Gövde Çizgisi -->
-                        <path d="M50 34 C 51 42, 49 48, 50 58" fill="none" stroke="#6366f1" stroke-width="4.5" stroke-linecap="round"/>
-                        <path d="M50 58 L 44 73 M 50 58 L 56 73" stroke="#818cf8" stroke-width="3.5" stroke-linecap="round"/>
-                    </g>
-                </svg>`,
-            floorPress: `
-                <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <line x1="10" y1="75" x2="90" y2="75" stroke="#334155" stroke-width="2"/>
-                    <circle cx="24" cy="67" r="5.5" fill="#fbcfe8"/>
-                    <path d="M19 64 C 13 61, 8 66, 5 73" fill="none" stroke="#db2777" stroke-width="2.5"/>
-                    <path d="M30 69 L 68 69" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/>
-                    <g class="anim-press">
-                        <path d="M46 69 L 46 45" stroke="#818cf8" stroke-width="3.5" stroke-linecap="round"/>
-                        <circle cx="46" cy="42" r="4.5" fill="#f43f5e"/><!-- Dumbbell -->
-                    </g>
-                </svg>`,
-            row: `
-                <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <circle cx="35" cy="28" r="5.5" fill="#fbcfe8"/>
-                    <path class="ponytail" d="M30 25 C 23 22, 18 26, 15 33" fill="#db2777"/>
-                    <path d="M35 34 C 37 44, 34 52, 35 64" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/>
-                    <g class="anim-row">
-                        <path d="M35 42 L 68 42" stroke="#818cf8" stroke-width="4" stroke-linecap="round"/>
-                        <circle cx="68" cy="42" r="3.5" fill="#f43f5e"/>
-                    </g>
-                </svg>`,
-            shoulderPress: `
-                <svg viewBox="0 0 100 100" class="w-full h-full">
-                    <circle cx="50" cy="32" r="5.5" fill="#fbcfe8"/>
-                    <path d="M45 29 C 39 26, 34 30, 31 37" fill="none" stroke="#db2777" stroke-width="2.5"/>
-                    <path d="M50 38 L 50 64" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/>
-                    <g class="anim-shoulder">
-                        <path d="M35 44 L 35 20 M 65 44 L 65 20" stroke="#818cf8" stroke-width="3.5" stroke-linecap="round"/>
-                    </g>
-                </svg>`
-        };
+<script>
+// ── PREMIUM AT KUYRUKLU KADIN SPORCU ÇİZİMLERİ ──────────────────────────────────
+const svgs = {
+  legPress: `<svg viewBox="0 0 100 100"><line x1="15" y1="85" x2="85" y2="15" stroke="#94a3b8" stroke-width="2.5" stroke-dasharray="4 2"/><circle cx="34" cy="36" r="6" fill="#fbcfe8"/><path class="ponytail" d="M29 33 C 22 30, 16 34, 13 42 C 16 38, 22 36, 29 35" fill="#db2777"/><path d="M38 41 C 46 42, 48 50, 48 58" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/><g class="anim-legpress"><path d="M48 58 C 58 54, 66 46, 74 34" fill="none" stroke="#818cf8" stroke-width="4.5" stroke-linecap="round"/></g><line x1="72" y1="22" x2="82" y2="38" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/></svg>`,
+  gluteBridge: `<svg viewBox="0 0 100 100"><line x1="10" y1="75" x2="90" y2="75" stroke="#94a3b8" stroke-width="2"/><circle cx="25" cy="66" r="6" fill="#fbcfe8"/><path class="ponytail-bridge" d="M20 63 C 14 60, 9 65, 6 72 C 9 68, 14 66, 20 65" fill="#db2777"/><g class="anim-bridge"><path d="M31 68 C 44 68, 52 64, 62 50" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/><path d="M62 50 C 68 58, 72 68, 76 75" fill="none" stroke="#818cf8" stroke-width="4" stroke-linecap="round"/></g></svg>`,
+  bosu: `<svg viewBox="0 0 100 100"><path d="M25 75 C 25 52, 75 52, 75 75 Z" fill="#3b82f6" opacity="0.65"/><line x1="15" y1="75" x2="85" y2="75" stroke="#1d4ed8" stroke-width="3.5"/><g class="anim-bosu"><circle cx="50" cy="28" r="6" fill="#fbcfe8"/><path class="ponytail-bosu" d="M45 25 C 39 22, 34 26, 31 33 C 34 29, 39 28, 45 27" fill="#db2777"/><path d="M50 34 C 51 42, 49 48, 50 58" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/><path d="M50 58 L 44 73 M 50 58 L 56 73" stroke="#818cf8" stroke-width="3.5" stroke-linecap="round"/></g></svg>`,
+  floorPress: `<svg viewBox="0 0 100 100"><line x1="10" y1="75" x2="90" y2="75" stroke="#94a3b8" stroke-width="2"/><circle cx="24" cy="67" r="6" fill="#fbcfe8"/><path d="M19 64 C 13 61, 8 66, 5 73" fill="none" stroke="#db2777" stroke-width="2.5"/><path d="M30 69 L 68 69" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/><g class="anim-press"><path d="M46 69 L 46 45" stroke="#818cf8" stroke-width="4" stroke-linecap="round"/><circle cx="46" cy="42" r="5" fill="#ef4444"/></g></svg>`,
+  row: `<svg viewBox="0 0 100 100"><circle cx="35" cy="28" r="6" fill="#fbcfe8"/><path class="ponytail" d="M30 25 C 23 22, 18 26, 15 33" fill="#db2777"/><path d="M35 34 C 37 44, 34 52, 35 64" fill="none" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/><g class="anim-row"><path d="M35 42 L 68 42" stroke="#818cf8" stroke-width="4.5" stroke-linecap="round"/><circle cx="68" cy="42" r="4" fill="#ef4444"/></g></svg>`,
+  shoulderPress: `<svg viewBox="0 0 100 100"><circle cx="50" cy="32" r="6" fill="#fbcfe8"/><path d="M45 29 C 39 26, 34 30, 31 37" fill="none" stroke="#db2777" stroke-width="2.5"/><path d="M50 38 L 50 64" stroke="#6366f1" stroke-width="5" stroke-linecap="round"/><g class="anim-shoulder"><path d="M35 44 L 35 20 M 65 44 L 65 20" stroke="#818cf8" stroke-width="4" stroke-linecap="round"/></g></svg>`
+};
 
-        // Kusursuz Orantılı Kas Anatomisi Haritaları (Ayrı Bölmeler)
-        const muscleMaps = {
-            frontUyluk: `
-                <svg viewBox="0 0 70 100" class="h-full">
-                    <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ÖN VÜCUT</text>
-                    <circle cx="35" cy="26" r="5" fill="#e2e8f0"/>
-                    <path d="M31 34 C 31 34, 35 32, 39 34 L 39 54 C 39 54, 35 56, 31 54 Z" fill="#cbd5e1"/>
-                    <!-- Çalışan Hedef Kas Bölgesi Parlaması -->
-                    <rect x="31" y="56" width="3.5" height="22" fill="#ef4444" class="muscle-glow" rx="1.5"/>
-                    <rect x="36.5" y="56" width="3.5" height="22" fill="#ef4444" class="muscle-glow" rx="1.5"/>
-                </svg>`,
-            backKalca: `
-                <svg viewBox="0 0 70 100" class="h-full">
-                    <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ARKA VÜCUT</text>
-                    <circle cx="35" cy="26" r="5" fill="#e2e8f0"/>
-                    <path d="M31 34 C 31 34, 35 32, 39 34 L 39 54 C 39 54, 35 56, 31 54 Z" fill="#cbd5e1"/>
-                    <!-- Hedef Kalça Kasları -->
-                    <circle cx="33" cy="56" r="4" fill="#ef4444" class="muscle-glow"/>
-                    <circle cx="37" cy="56" r="4" fill="#ef4444" class="muscle-glow"/>
-                    <rect x="31" y="61" width="3" height="20" fill="#cbd5e1" rx="1"/>
-                    <rect x="37" y="61" width="3" height="20" fill="#cbd5e1" rx="1"/>
-                </svg>`,
-            frontCore: `
-                <svg viewBox="0 0 70 100" class="h-full">
-                    <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ÖN VÜCUT</text>
-                    <circle cx="35" cy="26" r="5" fill="#e2e8f0"/>
-                    <!-- Aktif Karın/Core Haritası -->
-                    <path d="M31 34 C 31 34, 35 32, 39 34 L 39 54 C 39 54, 35 56, 31 54 Z" fill="#ef4444" class="muscle-glow"/>
-                    <rect x="31" y="56" width="3.5" height="22" fill="#cbd5e1" rx="1"/>
-                    <rect x="36.5" y="56" width="3.5" height="22" fill="#cbd5e1" rx="1"/>
-                </svg>`,
-            frontGogus: `
-                <svg viewBox="0 0 70 100" class="h-full">
-                    <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ÖN VÜCUT</text>
-                    <circle cx="35" cy="26" r="5" fill="#e2e8f0"/>
-                    <rect x="31" y="34" width="9" height="8" fill="#ef4444" class="muscle-glow" rx="1.5"/>
-                    <path d="M31 43 L 39 43 L 39 54 L 31 54 Z" fill="#cbd5e1"/>
-                    <rect x="31" y="56" width="3.5" height="22" fill="#cbd5e1" rx="1"/>
-                </svg>`,
-            backSirt: `
-                <svg viewBox="0 0 70 100" class="h-full">
-                    <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ARKA VÜCUT</text>
-                    <circle cx="35" cy="26" r="5" fill="#e2e8f0"/>
-                    <path d="M31 34 C 31 34, 35 32, 39 34 L 39 54 C 39 54, 35 56, 31 54 Z" fill="#ef4444" class="muscle-glow"/>
-                    <rect x="31" y="56" width="3" height="20" fill="#cbd5e1" rx="1"/>
-                </svg>`,
-            frontOmuz: `
-                <svg viewBox="0 0 70 100" class="h-full">
-                    <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ÖN VÜCUT</text>
-                    <circle cx="35" cy="26" r="5" fill="#e2e8f0"/>
-                    <circle cx="29" cy="35" r="2.5" fill="#ef4444" class="muscle-glow"/>
-                    <circle cx="41" cy="35" r="2.5" fill="#ef4444" class="muscle-glow"/>
-                    <path d="M31 34 L 39 34 L 39 54 L 31 54 Z" fill="#cbd5e1"/>
-                    <rect x="31" y="56" width="3.5" height="22" fill="#cbd5e1" rx="1"/>
-                </svg>`
-        };
+// ── ORANTI LI ANATOMİK SİLÜET İSKELETİ ──────────────────────────────────
+const H = `<g id="body"><circle cx="50" cy="18" r="11" fill="#cbd5e1" stroke="#94a3b8"/><path d="M32 34 L26 68 L28 96 L72 96 L74 68 L68 34 Z" fill="#cbd5e1" stroke="#cbd5e1"/><rect x="14" y="38" width="10" height="24" rx="4" fill="#cbd5e1"/><rect x="76" y="38" width="10" height="24" rx="4" fill="#cbd5e1"/><rect x="25" y="108" width="20" height="38" rx="6" fill="#cbd5e1"/><rect x="55" y="108" width="20" height="38" rx="6" fill="#cbd5e1"/><rect x="27" y="148" width="16" height="18" rx="4" fill="#cbd5e1"/><rect x="57" y="148" width="16" height="18" rx="4" fill="#cbd5e1"/></g>`;
 
-        const program = {
-            day1: {
-                title: "Alt Vücut & Core • Salon",
-                meta: "3 Hareket + Sabit Kardiyo Protokolü",
-                exercises: [
-                    { name: "Seated Leg Press", sets: 3, reps: 12, equip: "Makine", icon: "legPress", mapType: "frontUyluk", targets: ["Ön Bacak", "Kuadriseps"], desc: "Koltukta dik açıyla oturun. Ağırlık platformunu topuklarınızla kontrollüce itin. Diz kapaklarını en üst noktada kilitlemeyerek sürekli kas aktivasyonu sağlayın." },
-                    { name: "Dumbbell Glute Bridge", sets: 3, reps: 12, equip: "Serbest", icon: "gluteBridge", mapType: "backKalca", targets: ["Gluteus (Kalça)", "Arka Bacak"], desc: "Sırtüstü matta uzanın. Kalça üzerine aldığınız dumbbell'ı topuklardan güç alarak yukarı kilitleyin. APT duruş bozukluğunu nötralize eder." },
-                    { name: "Bosu Topunda Denge", sets: 3, reps: "45 sn", equip: "Bosu", icon: "bosu", mapType: "frontCore", targets: ["Derin Core", "Ayak Bileği"], desc: "Ergoterapist protokolü denge çalışması. Bosu topunun yumuşak merkezine iki ayakla çıkarak omurga dikliğini koruyun ve stabilizasyonu tetikleyin." }
-                ]
-            },
-            day2: {
-                title: "Üst Vücut & Postür • Salon",
-                meta: "3 Postür & Sıkılaşma Hareketi",
-                exercises: [
-                    { name: "Dumbbell Floor Press", sets: 3, reps: 12, equip: "Serbest", icon: "floorPress", mapType: "frontGogus", targets: ["Göğüs Kasları", "Arka Kol"], desc: "Matta sırtüstü yatarken kollar omuz hizasından yukarı preslenir. Sırt tamamen yerde sabitlendiği için bel omurlarına binen yük sıfırlanır." },
-                    { name: "Seated Cable Row", sets: 3, reps: 12, equip: "Kablo", icon: "row", mapType: "backSirt", targets: ["Trapez / Sırt", "Kürek Kemiği"], desc: "Dik pozisyonda oturarak kablo aparatını karnınıza doğru çekin. Çekerken omuzları kaldırmayın, kürek kemiklerini arkada sıkıştırarak postürü düzeltin." },
-                    { name: "Dumbbell Seated Press", sets: 3, reps: 10, equip: "Serbest", icon: "shoulderPress", mapType: "frontOmuz", targets: ["Deltoid (Omuz)", "Üst Gövde"], desc: "90 derece dik açılı sehpada belinizi arkaya yaslayarak omuz pres yapın. Dik oturmak omurga güvenliği için elzemdir." }
-                ]
-            },
-            day3: {
-                title: "Tüm Vücut Fonksiyonel • Salon",
-                meta: "3 Eklem Dostu Sıkılaşma Egzersizi",
-                exercises: [
-                    { name: "Reformer Footwork", sets: 3, reps: 15, equip: "Reformer", icon: "legPress", mapType: "frontUyluk", targets: ["Tüm Bacak", "Core Gücü"], desc: "Reformer pilates ünitesinde sırtüstü yatışta yay direnciyle barı itin. Yerçekimsiz yapıda eklem dostu bir alt vücut formudur." },
-                    { name: "Dead Bug (Mat Üzerinde)", sets: 3, reps: 12, equip: "Mat", icon: "floorPress", mapType: "frontCore", targets: ["Alt Karın / Core", "APT Desteği"], desc: "Kolları ve dizleri havada 90 derecede tutun. Bel omurlarını mata sertçe bastırarak çapraz kol ve bacağı kontrollü şekilde uzatın." },
-                    { name: "Bosu Topunda Bird-Dog", sets: 3, reps: 10, equip: "Bosu", icon: "bosu", mapType: "backSirt", targets: ["Erector Spinae", "Koordinasyon"], desc: "Dizleri Bosu topunun üzerine sabitleyerek emekleme duruşu alın. Dengede kalırken zıt kol ve bacağı tam düz çizgi halinde uzatıp çekin." }
-                ]
-            }
-        };
+// ── DİNAMİK ÇALIŞAN KAS KOORDİNATLARI ──────────────────────────────────
+const MAPS = {
+  frontUyluk: '<rect x="25" y="108" width="20" height="26" fill="#ef4444" class="muscle-glow" rx="4"/><rect x="55" y="108" width="20" height="26" fill="#ef4444" class="muscle-glow" rx="4"/>',
+  backKalca: '<circle cx="35" cy="103" r="8" fill="#ef4444" class="muscle-glow"/><circle cx="65" cy="103" r="8" fill="#ef4444" class="muscle-glow"/>',
+  frontCore: '<rect x="30" y="58" width="40" height="32" fill="#ef4444" class="muscle-glow" rx="4"/>',
+  frontGogus: '<rect x="32" y="36" width="36" height="16" fill="#ef4444" class="muscle-glow" rx="2"/>',
+  backSirt: '<path d="M32 34 L26 65 L38 85 L62 85 L74 65 L68 34 Z" fill="#ef4444" class="muscle-glow"/>',
+  frontOmuz: '<circle cx="20" cy="38" r="6" fill="#ef4444" class="muscle-glow"/><circle cx="80" cy="38" r="6" fill="#ef4444" class="muscle-glow"/>'
+};
 
-        function switchDay(dayId) {
-            ['day1', 'day2', 'day3'].forEach(d => {
-                document.getElementById(`tab-${d}`).classList.remove('tab-active');
-            });
-            document.getElementById(`tab-${dayId}`).classList.add('tab-active');
+// ── EKSİKSİZ VERİ TABANI BAĞLANTISI ──────────────────────────────────
+const ex_data = {
+  treadmill_warmup: { title: "Yürüyüş Bandı — Isınma", set: "1", rep: "8 dk", eq: "Bant", anim: "bosu", map: "frontUyluk", p: ["Genel Isınma"], s: ["Bacak Kasları"], desc: "Gövde dik ve omuzlar geride olacak şekilde yürüyüşe başlayın. Pelvisinizi öne veya arkaya eğmeden tam nötr pozisyonda sabitleyin." },
+  singleleg: { title: "Tek Ayak Durma", set: "2", rep: "20-30 sn", eq: "Zemin", anim: "bosu", map: "frontCore", p: ["Bilek Stabilitesi", "Derin Core"], s: ["Denge"], desc: "Ergoterapistinizin önerdiği koruyucu denge egzersizidir. Karşıda sabit bir noktaya odaklanarak bir ayağınızı yerden kaldırın ve dik durun." },
+  bosusquat: { title: "Bosu Topu Squat", set: "2", rep: "10-12 Tekrar", eq: "Bosu", anim: "bosu", map: "frontUyluk", p: ["Ön Uyluk (Quads)", "Propriosepsiyon"], s: ["Denge & Core"], desc: "Bosu topunun üzerine dengeli adımlarla çıkın. Diz kapaklarınızın içe çökmesine izin vermeden, kalçayı arkaya vererek yavaşça squat yapın." },
+  hipflexor: { title: "Hip Flexor Stretch", set: "3", rep: "30 sn", eq: "Mat", anim: "gluteBridge", map: "frontUyluk", p: ["Kalça Fleksör"], s: ["Gevşeme & Esneklik"], desc: "L4-5 disk baskısını hafifletmek ve anterior pelvik tilti (APT) düzeltmek için bu hareket kritiktir. Arkadaki kasığı kontrollüce esnetin." },
+  legcurl: { title: "Seated Leg Curl", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "shoulderPress", map: "backKalca", p: ["Hamstring (Arka Bacak)"], s: ["Baldır"], desc: "Kuyruk sokumu (koksiks) koruması için minder desteğini mutlaka yerleştirin. Gövdeyi bükmeden topukları yavaşça aşağı bastırın." },
+  legpress: { title: "Leg Press Machine", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "legPress", map: "frontUyluk", p: ["Ön Uyluk", "Kalça (Glute)"], s: ["Diz Stabilitesi"], desc: "İtiş esnasında belinizin koltuk minderinden yukarı kalkmamasına kesinlikle dikkat edin. En üst noktada dizlerinizi kilitlemeyip hafif bükülü bırakın." },
+  hipadd: { title: "Hip Adduction Machine", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "legPress", map: "frontUyluk", p: ["İç Bacak (Adduktör)"], s: ["Pelvis Stabilizasyonu"], desc: "Bacaklarınızı kontrollü bir hızla içe doğru sıkıştırın. Geri bırakırken plakaların birbirine çarparak kas direncini düşürmesini engelleyin." },
+  kickback: { title: "Cable Glute Kickback", set: "3", rep: "12 Tekrar", eq: "Kablo", anim: "shoulderPress", map: "backKalca", p: ["Gluteus Maximus (Kalça)"], s: ["Arka Bacak"], desc: "Gövdeyi yere paralel konuma yaklaştırıp kabloyu kalçadan arkaya tekme atar gibi uzatın. Bel kavisini korumak için belden bükülmeyin." },
+  cablecrunch: { title: "Cable Crunch", set: "3", rep: "12 Tekrar", eq: "Kablo", anim: "row", map: "frontCore", p: ["Karın Duvarı", "Abs"], s: ["Core Gücü"], desc: "Kablo istasyonunda diz çökerek halatı başınızın yanına alın. Kalçayı oynatmadan, omurganızı yuvarlayarak dirsekleri dize indirin." },
+  pallofpress: { title: "Pallof Press", set: "3", rep: "12 Tekrar", eq: "Kablo", anim: "row", map: "frontCore", p: ["Oblik (Yan Karın)", "Pelvik Denge"], s: ["Postür Koruma"], desc: "Yandan gelen kablo direncine karşı gövdeyi hiç döndürmeden ellerinizi göğsünüzden ileri uzatın. APT postür düzeltiminde anahtar role sahiptir." },
+  treadmill_finish: { title: "Yürüyüş Bandı — Bitiş", set: "1", rep: "8 dk", eq: "Bant", anim: "bosu", map: "frontUyluk", p: ["Yağ Yakımı"], s: ["Kardiyo Kapasitesi"], desc: "Dik bir omurgayla tempolu yürüyün. 4. haftadan itibaren antrenman adaptasyonunu artırmak için eğimi %6-7 seviyesine taşıyabilirsiniz." },
+  pillowhinge: { title: "Denge Yastığı Hip Hinge", set: "2", rep: "10 Tekrar", eq: "Yastık", anim: "bosu", map: "backKalca", p: ["Pelvis Kontrolü", "Denge"], s: ["Arka Bacak"], desc: "Yastık üzerinde dengedeyken kalçayı düz bir hat üstünde arkaya doğru itin. Omurga hattının düzlüğünü baştan sona bozmamaya çalışın." },
+  reformerbalance: { title: "Reformer Core Press", set: "2", rep: "12 Tekrar", eq: "Reformer", anim: "floorPress", map: "frontCore", p: ["Core Stabilitesi"], s: ["Omuz Stabilizasyonu"], desc: "Reformer yay direncinin vücudunuzu sağa-sola savurmasına izin vermeden gövdeyi merkezde kilitleyin ve kollarla kontrollü itiş yapın." },
+  facepull: { title: "Face Pull", set: "3", rep: "15 Tekrar", eq: "Kablo", anim: "row", map: "backSirt", p: ["Arka Omuz", "Rotator Cuff"], s: ["Üst Sırt / Postür"], desc: "Halatı alna doğru çekerken dirsekleri dışarıya doğru açın. Hareketin sonunda ellerinizi kulak hizasında tutup 1 saniye sırtı sıkıştırın." },
+  reversfly: { title: "Reverse Fly Machine", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "row", map: "backSirt", p: ["Kürek Kemiği Çevresi"], s: ["Arka Omuz"], desc: "Gövdeyi pede yaslayıp kolları geriye doğru açın. Açış anında omuzları yukarı kaldırmadan kürek kemiklerini birbirine bastırın." },
+  chestpress: { title: "Chest Press Machine", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "floorPress", map: "frontGogus", p: ["Göğüs Kasları"], s: ["Ön Omuz"], desc: "Minder yüksekliğini ayarlayıp omuzları geriye kilitleyin. Göğüs kaslarından güç alarak kolları ileriye doğru presleyin." },
+  arnold: { title: "Arnold Press", set: "3", rep: "12 Tekrar", eq: "Dumbbell", anim: "shoulderPress", map: "frontOmuz", p: ["Omuz / Deltoid"], s: ["Üst Göğüs"], desc: "Sehpa üzerinde avuç içleri yüzünüze bakacak şekilde dumbbell'ları tutun. Yukarı iterken bilekleri döndürerek karşıya bakmasını sağlayın." },
+  lateralraise: { title: "Dumbbell Lateral Raise", set: "3", rep: "12 Tekrar", eq: "Dumbbell", anim: "shoulderPress", map: "frontOmuz", p: ["Yan Omuz"], s: ["Üst Trapez"], desc: "Gövdeyi hafifçe öne eğip dirsekleri bozmadan kollarınızı yanlara doğru açın. Ağırlıkları omuz hizasından daha yukarıya fırlatmayın." },
+  triceppushdown: { title: "Tricep Pushdown", set: "3", rep: "12 Tekrar", eq: "Kablo", anim: "row", map: "backSirt", p: ["Arka Kol (Triceps)"], s: ["Ön Kol Stabilitesi"], desc: "Dirseklerinizi gövdenizin yanına tamamen sabitleyin. Sadece ön kolları aşağı doğru hareket ettirerek halatı veya barı yere doğru presleyin." },
+  cablecurl: { title: "Cable Curl", set: "3", rep: "12 Tekrar", eq: "Kablo", anim: "row", map: "frontOmuz", p: ["Ön Kol (Biceps)"], s: ["Bilek Gücü"], desc: "Dirsekleri gövdeden ayırmadan kablo barını yukarı bükün. Aşağı indirirken kası tamamen bırakmayıp yavaş ve dirençli indirin." },
+  tandemwalk: { title: "Tandem Yürüme", set: "2", rep: "12 Adım", eq: "Zemin", anim: "bosu", map: "frontCore", p: ["Motor Planlama", "Propriosepsiyon"], s: ["Denge"], desc: "Düz bir hat üzerinde, arkadaki ayağın parmak ucunu öndeki ayağın topuğuna tam sıfır değdirerek yavaş ve kontrollü adımlarla ilerleyin." },
+  reformerlunge: { title: "Reformer Lunge", set: "2", rep: "10 Tekrar", eq: "Reformer", anim: "legPress", map: "frontUyluk", p: ["Tek Bacak Dengesi"], s: ["Kalça Stabilitesi"], desc: "Reformer platformunda tek ayak üstünde dengeyi kurun. Kalça hizasını bozmadan, diz açısını kontrol ederek lunge formunu tamamlayın." },
+  latpulldown: { title: "Lat Pulldown", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "row", map: "backSirt", p: ["Kanat Kasları (Lats)"], s: ["Üst Sırt"], desc: "Barı göğsünüzün üst hattına doğru çekerken dirsekleri kalça cebinize doğru indirmeye odaklanın. Sırt kaslarını hareket sonunda sıkın." },
+  seatedrow: { title: "Seated Row", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "row", map: "backSirt", p: ["Orta Sırt", "Romboid"], s: ["Kanat Kasları"], desc: "Dik pozisyonda tutamakları karnınıza çekin. Çekerken omuzları aşağı bastırarak kürek kemiklerini arkada birbirine iyice kenetleyin." },
+  singlerow: { title: "Single Arm DB Row", set: "3", rep: "10 Tekrar", eq: "Dumbbell", anim: "row", map: "backSirt", p: ["Geniş Sırt Kasları"], s: ["Core Dengesi"], desc: "Sehpa desteğinde tek elle ağırlığı kalça cebine doğru çekin. Omurganın düzlüğünü ve gövde paralelliğini baştan sona bozmayın." },
+  machinefly: { title: "Machine Fly", set: "3", rep: "12 Tekrar", eq: "Makine", anim: "floorPress", map: "frontGogus", p: ["Göğüs Sıkılaşma"], s: ["Ön Omuz"], desc: "Kolları dirseklerden hafif bükülü sabitleyin ve makine kollarını göğüs merkezinde birleştirin. Açılırken göğüs kasını tam esnetin." },
+  abwheel: { title: "Ab Wheel", set: "3", rep: "10 Tekrar", eq: "Tekerlek", anim: "row", map: "frontCore", p: ["Derin Core", "Karın Duvarı"], s: ["Bel Koruma"], desc: "Dizlerin altına yumuşak pad yerleştirin. Belinizi aşağı sarkıtmadan, kalçayı ve karnı sımsıkı kilitleyerek ileri uzanıp kendinizi çekin." },
+  piriformis: { title: "Piriformis Germe", set: "2", rep: "30 sn", eq: "Mat", anim: "gluteBridge", map: "backKalca", p: ["Piriformis Kas Grubu", "Kalça Gevşeme"], s: ["Hamstring"], desc: "Mat üzerinde sol bacağa ve kalça kaslarına odaklanarak germeyi yapın. L4-5 diski çevresindeki sinir baskısını tamamen hafifletir." }
+};
 
-            document.getElementById('section-title').innerText = program[dayId].title;
-            document.getElementById('section-meta').innerText = program[dayId].meta;
+function showDay(idx) {
+  for(let i=0; i<3; i++) {
+    document.getElementById('d'+i).classList.remove('active');
+    document.getElementById('b'+i).classList.remove('active');
+  }
+  document.getElementById('d'+idx).classList.add('active');
+  document.getElementById('b'+idx).classList.add('active');
+}
 
-            const container = document.getElementById('workout-container');
-            container.innerHTML = '';
+function open_ex(key) {
+  const data = ex_data[key];
+  if(!data) return;
 
-            program[dayId].exercises.forEach((ex, index) => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-slate-200 rounded-2xl p-4 flex justify-between items-center cursor-pointer hover:bg-slate-50 transition shadow-sm";
-                card.setAttribute('onclick', `openModal('${dayId}', ${index})`);
-                
-                card.innerHTML = `
-                    <div class="flex items-center space-x-3.5">
-                        <div class="w-12 h-12 bg-slate-50 rounded-xl p-1 flex items-center justify-center border border-slate-200/60 shadow-2xs">
-                            ${svgs[ex.icon]}
-                        </div>
-                        <div>
-                            <h4 class="text-sm font-bold text-slate-900">${ex.name}</h4>
-                            <p class="text-xs text-slate-500 font-medium">${ex.sets} Set · ${ex.reps}</p>
-                        </div>
-                    </div>
-                    <div class="text-indigo-600 text-xs font-bold flex items-center space-x-1">
-                        <span>İncele</span>
-                        <span>❯</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+  document.getElementById('m-title').innerText = data.title;
+  document.getElementById('m-set').innerText = data.set;
+  document.getElementById('m-rep').innerText = data.rep;
+  document.getElementById('m-eq').innerText = data.eq;
+  document.getElementById('ai-body').innerText = data.desc;
 
-        function openModal(dayId, index) {
-            const ex = program[dayId].exercises[index];
-            
-            document.getElementById('modal-title').innerText = ex.name;
-            document.getElementById('modal-sets').innerText = ex.sets;
-            document.getElementById('modal-reps').innerText = ex.reps;
-            document.getElementById('modal-equip').innerText = ex.equip;
-            document.getElementById('modal-desc').innerText = ex.desc;
-            
-            document.getElementById('modal-animation-box').innerHTML = svgs[ex.icon];
+  // Premium Canlı Kadın Sporcu Animasyonu
+  const animBox = document.getElementById('big-anim');
+  if(svgs[data.anim]) {
+    animBox.innerHTML = svgs[data.anim];
+  }
 
-            // İstediğin Ayrı Ön ve Arka Bölmeli Kas Grafiği Oluşturma Alanı
-            const mapBox = document.getElementById('modal-muscle-map');
-            if(ex.mapType.startsWith('front')) {
-                mapBox.innerHTML = muscleMaps[ex.mapType] + `
-                    <svg viewBox="0 0 70 100" class="h-full opacity-15">
-                        <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ARKA VÜCUT</text>
-                        <circle cx="35" cy="26" r="5" fill="#cbd5e1"/>
-                        <path d="M31 34 C 31 34, 35 32, 39 34 L 39 54 L 31 54 Z" fill="#cbd5e1"/>
-                    </svg>`;
-            } else {
-                mapBox.innerHTML = `
-                    <svg viewBox="0 0 70 100" class="h-full opacity-15">
-                        <text x="35" y="10" fill="#94a3b8" font-size="8.5" font-weight="700" text-anchor="middle">ÖN VÜCUT</text>
-                        <circle cx="35" cy="26" r="5" fill="#cbd5e1"/>
-                        <path d="M31 34 L 39 34 L 39 54 L 31 54 Z" fill="#cbd5e1"/>
-                    </svg>` + muscleMaps[ex.mapType];
-            }
+  // Ayrı Ön ve Arka Kas Bölmelerini Bağımsız Güncelleme
+  const frontSvg = document.getElementById('d-front');
+  const backSvg = document.getElementById('d-back');
+  
+  if(data.map.startsWith('front')) {
+    frontSvg.innerHTML = H + MAPS[data.map];
+    backSvg.innerHTML = H; // Arka boş kalır
+  } else {
+    frontSvg.innerHTML = H; // Ön boş kalır
+    backSvg.innerHTML = H + MAPS[data.map];
+  }
 
-            const targetBox = document.getElementById('modal-targets');
-            targetBox.innerHTML = '';
-            ex.targets.forEach(t => {
-                const span = document.createElement('span');
-                span.className = "text-[10px] font-bold bg-indigo-50 text-indigo-600 border border-indigo-100 px-3 py-1 rounded-full shadow-3xs";
-                span.innerText = t;
-                targetBox.appendChild(span);
-            });
+  // Kas Etiketlerini (Chips) Dinamik Oluşturma
+  const chipsBox = document.getElementById('m-chips');
+  chipsBox.innerHTML = '';
+  
+  data.p.forEach(m => {
+    const span = document.createElement('span');
+    span.className = "muscle-chip mc-primary";
+    span.innerText = m;
+    chipsBox.appendChild(span);
+  });
+  
+  data.s.forEach(m => {
+    const span = document.createElement('span');
+    span.className = "muscle-chip mc-secondary";
+    span.innerText = m;
+    chipsBox.appendChild(span);
+  });
 
-            document.getElementById('exercise-modal').classList.remove('hidden');
-        }
+  document.getElementById('modal').classList.add('open');
+}
 
-        function closeModal() {
-            document.getElementById('exercise-modal').classList.add('hidden');
-        }
+function close_modal() {
+  document.getElementById('modal').classList.remove('open');
+}
 
-        window.onload = function() {
-            switchDay('day1');
-        };
-    </script>
+function close_if_bg(e) {
+  if(e.target.id === 'modal') close_modal();
+}
+</script>
 </body>
 </html>
