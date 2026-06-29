@@ -13,7 +13,6 @@
 </head>
 <body class="bg-gray-50 font-sans pb-24">
 
-    <!-- Header -->
     <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-50">
         <h1 class="text-xl font-bold text-center">FitRutinim</h1>
         <p class="text-xs text-center text-indigo-200">Kas Kütlesi, Denge & APT Postür Desteği</p>
@@ -21,22 +20,18 @@
 
     <main class="max-w-md mx-auto p-4">
         
-        <!-- Gün Seçimi -->
         <div class="flex space-x-2 mb-4 bg-white p-1 rounded-lg shadow-sm">
             <button onclick="switchDay('day1')" id="btn-day1" class="flex-1 py-2 text-xs font-bold rounded-md bg-indigo-600 text-white">1. Gün: Alt & APT</button>
             <button onclick="switchDay('day2')" id="btn-day2" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">2. Gün: Üst & Postür</button>
             <button onclick="switchDay('day3')" id="btn-day3" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">3. Gün: Tüm Vücut</button>
         </div>
 
-        <!-- Rutin Bölümü -->
         <div id="program-section">
             
-            <!-- Kas Zorlama Kılavuzu -->
             <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl mb-3 text-xs text-indigo-900">
                 <span class="font-bold">🔥 Doğru Ağırlık Seçimi:</span> Set bittiğinde "nizami formda en fazla 2-3 tekrar daha yapabilirdim" hissetmelisiniz. Set aralarında <strong>60-90 sn</strong> dinlenin.
             </div>
 
-            <!-- Isınma Kartı -->
             <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl mb-4 text-xs space-y-1.5">
                 <div class="font-bold text-amber-800 flex items-center">🏃‍♀️ Sabit Isınma Protokolü (7 dk)</div>
                 <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-amber-900 font-bold">Hız: 4.5-5.0 km/s | Eğim: %1</span> (Hafif Başlangıç)</p>
@@ -44,10 +39,8 @@
                 <p class="text-gray-500 italic mt-1">*Bant sonrası 1-2 dk Couch Stretch & Kedi-Deve esnemesi yapınız (APT için).</p>
             </div>
 
-            <!-- Hareket Listesi -->
             <div id="workout-list" class="space-y-4"></div>
 
-            <!-- Soğuma Kartı -->
             <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl mt-4 text-xs space-y-1.5">
                 <div class="font-bold text-blue-800 flex items-center">🧘‍♀️ Sabit Soğuma Protokolü (5 dk)</div>
                 <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-blue-900 font-bold">Hız: 4.2-4.5 km/s | Eğim: %1.5</span> (Yavaşlama)</p>
@@ -56,7 +49,6 @@
             </div>
         </div>
 
-        <!-- Grafik Bölümü -->
         <div id="graph-section" class="hidden bg-white p-4 rounded-xl shadow-sm mt-2">
             <h3 class="text-sm font-bold text-gray-800 mb-4">Haftalık Ağırlık Gelişimi</h3>
             <canvas id="progressChart" width="400" height="250"></canvas>
@@ -64,7 +56,6 @@
 
     </main>
 
-    <!-- Nav Bar -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 flex justify-around max-w-md mx-auto shadow-lg z-50">
         <button onclick="showSection('program')" class="flex flex-col items-center text-indigo-600 font-medium text-xs">
             <span class="text-lg">🏋️‍♀️</span><span>Programım</span>
@@ -77,19 +68,19 @@
     <script>
         const workouts = {
             day1: [
-                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu alt vücut kas kütlesi geliştirir.', img: 'https://fitnessprogramer.com/wp-content/uploads/2021/06/Sled-Leg-Press.gif' },
-                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı doğrudan hedefler.', img: 'https://fitnessprogramer.com/wp-content/uploads/2021/10/Dumbbell-Glute-Bridge.gif' },
-                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun mavi/yuvarlak kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ergoterapist onaylı derin stabilizasyon.', img: 'https://fitnessprogramer.com/wp-content/uploads/2024/02/Bosu-Ball-Balance.gif' }
+                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu alt vücut kas kütlesi geliştirir.', videoId: 'yZ8XbZ_Yn6A' },
+                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı doğrudan hedefler.', videoId: 'fN7LId7vTIE' },
+                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun mavi/yuvarlak kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ergoterapist onaylı derin stabilizasyon.', videoId: 'v8Uf8N_U-wU' }
             ],
             day2: [
-                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken çift dumbbell\'ı yukarı doğru itin. Beliniz yerde sabit kaldığı için APT kavisini korur.', img: 'https://fitnessprogramer.com/wp-content/uploads/2022/02/Dumbbell-Floor-Press.gif' },
-                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Dik durarak kabloyu karnınıza çekin ve kürek kemiklerinizi sıkıştırın. Masa başı çalışan kadınlar için ideal postür egzersizi.', img: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Cable-Row.gif' },
-                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik sehpada oturarak dumbbell\'ları yukarı itin. Oturmak bel omurlarını tamamen güvenceye alır.', img: 'https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif' }
+                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken çift dumbbell\'ı yukarı doğru itin. Beliniz yerde sabit kaldığı için APT kavisini korur.', videoId: 'uMIzZ-K8eHw' },
+                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Dik durarak kabloyu karnınıza çekin ve kürek kemiklerinizi sıkıştırın. Masa başı çalışan kadınlar için ideal postür egzersizi.', videoId: 'GZbfZ033f74' },
+                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik sehpada oturarak dumbbell\'ları yukarı itin. Oturmak bel omurlarını tamamen güvenceye alır.', videoId: 'HzIiF_v_LzE' }
             ],
             day3: [
-                { id: 'd3_1', name: 'Reformer Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı itin. Yay direnciyle yerçekimsiz ve eklem dostu kas aktivasyonu sağlar.', img: 'https://fitnessprogramer.com/wp-content/uploads/2023/12/Pilates-Reformer-Footwork.gif' },
-                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü kontrollü uzuv uzatma. Belinizi matın içine doğru kuvvetlice presleyin. APT postürünü nötralize eden en etkili kadın core hareketidir.', img: 'https://fitnessprogramer.com/wp-content/uploads/2021/05/Dead-Bug.gif' },
-                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak yüzeyine koyup emekleme pozisyonu alın. Dengenizi bozmadan zıt kol ve bacağı düz uzatın.', img: 'https://fitnessprogramer.com/wp-content/uploads/2022/04/Bird-Dog.gif' }
+                { id: 'd3_1', name: 'Reformer Pilates Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı itin. Yay direnciyle yerçekimsiz ve eklem dostu kas aktivasyonu sağlar.', videoId: '98Z5P_uU0l8' },
+                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü kontrollü uzuv uzatma. Belinizi matın içine doğru kuvvetlice presleyin. APT postürünü nötralize eden en etkili kadın core hareketidir.', videoId: 'g_7M9vI-B0w' },
+                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak yüzeyine koyup emekleme pozisyonu alın. Dengenizi bozmadan zıt kol ve bacağı düz uzatın.', videoId: '9s6-B-Csh6E' }
             ]
         };
 
@@ -123,12 +114,15 @@
                 card.className = `exercise-card bg-white p-3 rounded-xl shadow-sm border border-gray-100 flex flex-col space-y-3 ${isDone ? 'completed' : ''}`;
                 
                 card.innerHTML = `
-                    <div class="flex space-x-3">
-                        <img src="${ex.img}" alt="${ex.name}" class="w-16 h-16 object-cover rounded-lg bg-gray-50 shrink-0 border border-gray-100" onerror="this.src='https://placehold.co/150?text=Fit'">
-                        <div class="flex-1">
+                    <div class="flex flex-col space-y-2">
+                        <div class="flex justify-between items-start">
                             <h4 class="font-bold text-gray-800 text-sm">${ex.name}</h4>
-                            <p class="text-xs text-indigo-600 font-bold mb-0.5">${ex.sets} Set x ${ex.reps}</p>
-                            <p class="text-[11px] text-gray-500 leading-tight">${ex.desc}</p>
+                            <p class="text-xs text-indigo-600 font-bold shrink-0">${ex.sets} Set x ${ex.reps}</p>
+                        </div>
+                        <p class="text-[11px] text-gray-500 leading-tight">${ex.desc}</p>
+                        
+                        <div class="w-full aspect-video rounded-lg overflow-hidden bg-gray-100 border border-gray-200 mt-1">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/${ex.videoId}?rel=0&modestbranding=1" title="${ex.name}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                     <div class="flex items-center justify-between pt-2 border-t border-gray-100">
