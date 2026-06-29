@@ -1,49 +1,276 @@
-<svg viewBox="0 0 120 120" width="100%" height="100%" style="background-color: #1e2330; border-radius: 12px; display: block; margin: auto;">
-  <!-- Zemin Çizgisi -->
-  <line x1="10" y1="95" x2="110" y2="95" stroke="#374151" stroke-width="3" stroke-linecap="round"/>
-  
-  <!-- HAREKETLİ KADIN FİGÜRÜ (Glute Bridge Örneği) -->
-  <g>
-    <!-- Animasyon: Kalçayı ve gövdeyi yukarı/aşağı pürüzsüzce hareket ettirir -->
-    <animateTransform 
-      attributeName="transform" 
-      type="translate" 
-      values="0,0; 0,-18; 0,0" 
-      dur="2.5s" 
-      repeatCount="indefinite" 
-      type="smooth"/>
-      
-    <!-- Baş ve Topuz Saç Detayı -->
-    <circle cx="30" cy="85" r="7" fill="#fbcfe8"/>
-    <circle cx="24" cy="81" r="4" fill="#db2777"/><!-- Saç Topuzu -->
-    
-    <!-- Anatomik Orantılı Gövde -->
-    <path d="M37 86 Q 55 86 65 70" fill="none" stroke="#4f46e5" stroke-width="7" stroke-linecap="round"/>
-    
-    <!-- Karın Bölgesi Destek Çizgisi -->
-    <path d="M37 86 Q 52 80 65 70" fill="none" stroke="#6366f1" stroke-width="3"/>
-  </g>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitRutinim - Özel Antrenman Programı</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { background-color: #0d1117; color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+        .tab-active { border-bottom: 3px solid #58a6ff; color: #f0f6fc; }
+        .modal { transition: opacity 0.25s ease; }
+        
+        /* Pürüzsüz ve Orantılı Anatomik CSS Animasyonları */
+        @keyframes legPressMovement {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-12px, 8px); }
+        }
+        @keyframes gluteBridgeMovement {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-16px); }
+        }
+        @keyframes bosuBalanceMovement {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        @keyframes floorPressMovement {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-14px); }
+        }
+        @keyframes rowMovement {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-12px); }
+        }
+        @keyframes shoulderPressMovement {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-16px); }
+        }
 
-  <!-- Sabit Kalan Bacaklar (Orantılı Diz ve Ayak Bileği Ekleyerek) -->
-  <g>
-    <!-- Üst Bacak / Diz -->
-    <line x1="65" y1="70" x2="80" y2="52" stroke="#4f46e5" stroke-width="6" stroke-linecap="round">
-      <animate attributeName="y2" values="52;34;52" dur="2.5s" repeatCount="indefinite"/>
-      <animate attributeName="x2" values="80;75;80" dur="2.5s" repeatCount="indefinite"/>
-    </line>
-    <!-- Alt Bacak / Ayak -->
-    <line x1="80" y1="52" x2="85" y2="95" stroke="#6366f1" stroke-width="5" stroke-linecap="round">
-      <animate attributeName="x1" values="80;75;80" dur="2.5s" repeatCount="indefinite"/>
-      <animate attributeName="y1" values="52;34;52" dur="2.5s" repeatCount="indefinite"/>
-    </line>
-  </g>
+        .anim-legpress { animation: legPressMovement 2s infinite ease-in-out; }
+        .anim-bridge { animation: gluteBridgeMovement 2.2s infinite ease-in-out; }
+        .anim-bosu { animation: bosuBalanceMovement 1.5s infinite ease-in-out; transform-origin: 50px 75px; }
+        .anim-press { animation: floorPressMovement 1.8s infinite ease-in-out; }
+        .anim-row { animation: rowMovement 2s infinite ease-in-out; }
+        .anim-shoulder { animation: shoulderPressMovement 1.9s infinite ease-in-out; }
+    </style>
+</head>
+<body class="pb-12">
 
-  <!-- Destek Alan Kollar -->
-  <line x1="37" y1="88" x2="60" y2="88" stroke="#312e81" stroke-width="4" stroke-linecap="round"/>
-  
-  <!-- Çalışan Kas Bölgesi Göstergesi (Kalça) -->
-  <circle cx="60" cy="74" r="5" fill="#f43f5e" opacity="0.8">
-    <animate attributeName="opacity" values="0.2;0.9;0.2" dur="2.5s" repeatCount="indefinite"/>
-    <animateTransform attributeName="transform" type="translate" values="0,0; 0,-18; 0,0" dur="2.5s" repeatCount="indefinite"/>
-  </circle>
-</svg>
+    <div class="bg-[#161b22] p-4 text-center border-b border-[#30363d]">
+        <h1 class="text-xl font-bold text-[#f0f6fc]">FitRutinim</h1>
+        <p class="text-xs text-[#8b949e] mt-0.5">Kas Kütlesi, Denge & APT Postür Desteği</p>
+    </div>
+
+    <div class="bg-[#161b22] flex text-center text-sm font-semibold border-b border-[#30363d] sticky top-0 z-40">
+        <button id="tab-day1" onclick="switchDay('day1')" class="flex-1 py-3 text-[#8b949e] tab-active">🏋️‍♀️ Gün 1: Alt</button>
+        <button id="tab-day2" onclick="switchDay('day2')" class="flex-1 py-3 text-[#8b949e]">💪 Gün 2: Üst</button>
+        <button id="tab-day3" onclick="switchDay('day3')" class="flex-1 py-3 text-[#8b949e]">🧘‍♀️ Gün 3: Tüm</button>
+    </div>
+
+    <div class="max-w-md mx-auto p-4 space-y-4">
+        
+        <div class="mb-2">
+            <h2 id="section-title" class="text-lg font-bold text-[#f0f6fc]">Alt Vücut & Core • Salon</h2>
+            <p id="section-meta" class="text-xs text-[#8b949e] mt-1">~48 dk • Makine & Kablo • 3 Hareket + Kardiyo</p>
+        </div>
+
+        <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-4">
+            <div class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-2">🔥 Sabit Isınma Protokolü</div>
+            <h3 class="text-sm font-bold text-[#f0f6fc] mb-1">Yürüyüş Bandı — Isınma</h3>
+            <p class="text-xs text-[#8b949e] mb-2">8 dk • Hız: 5-5.5 km/s • Eğim: %2-3</p>
+            <span class="text-[11px] bg-amber-950/40 text-amber-400 border border-amber-900/50 px-2 py-0.5 rounded">Pelvis Nötr · Gövde Dik</span>
+        </div>
+
+        <div id="workout-container" class="space-y-3"></div>
+
+    </main>
+
+    <div id="exercise-modal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-[#161b22] border border-[#30363d] w-full max-w-sm rounded-2xl overflow-hidden shadow-2xl relative">
+            
+            <button onclick="closeModal()" class="absolute right-4 top-4 text-[#8b949e] hover:text-white text-xl font-bold bg-[#21262d] w-8 h-8 rounded-full flex items-center justify-center z-50">×</button>
+            
+            <div class="p-4 border-b border-[#30363d]">
+                <h3 id="modal-title" class="text-base font-bold text-white text-center">Hareket Adı</h3>
+                <div class="flex justify-center space-x-6 text-center mt-3 text-xs">
+                    <div><div id="modal-sets" class="text-base font-bold text-[#58a6ff]">3</div><div class="text-[#8b949e] text-[10px]">SET</div></div>
+                    <div><div id="modal-reps" class="text-base font-bold text-[#58a6ff]">12</div><div class="text-[#8b949e] text-[10px]">TEKRAR</div></div>
+                    <div><div id="modal-equip" class="text-base font-bold text-[#58a6ff]">Makine</div><div class="text-[#8b949e] text-[10px]">EKİPMAN</div></div>
+                </div>
+            </div>
+
+            <div class="bg-[#0d1117] h-44 flex items-center justify-center p-2 relative border-b border-[#30363d]" id="modal-animation-box">
+                </div>
+
+            <div class="p-4 space-y-4">
+                <div>
+                    <div class="text-[10px] text-[#8b949e] font-bold uppercase tracking-wider mb-1.5">Çalışan Hedef Kaslar</div>
+                    <div id="modal-targets" class="flex flex-wrap gap-1.5">
+                        </div>
+                </div>
+
+                <div class="bg-[#21262d] p-3 rounded-xl border border-[#30363d]">
+                    <div class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider mb-1">✨ Nasıl Yapılır? · AI Açıklaması</div>
+                    <p id="modal-desc" class="text-xs text-[#c9d1d9] leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tüm Kadın Figürü SVG Tasarımları (Tam Orantılı ve Estetik)
+        const svgs = {
+            legPress: `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <line x1="20" y1="80" x2="80" y2="20" stroke="#21262d" stroke-width="4"/>
+                    <circle cx="35" cy="35" r="6" fill="#fbcfe8"/><circle cx="29" cy="31" r="3.5" fill="#db2777"/><line x1="38" y1="40" x2="48" y2="55" stroke="#58a6ff" stroke-width="6" stroke-linecap="round"/><g class="anim-legpress">
+                        <line x1="48" y1="55" x2="62" y2="40" stroke="#388bfd" stroke-width="5" stroke-linecap="round"/><line x1="62" y1="40" x2="74" y2="28" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/></g>
+                    <line x1="70" y1="20" x2="80" y2="34" stroke="#f43f5e" stroke-width="5"/></svg>`,
+            gluteBridge: `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <line x1="10" y1="75" x2="90" y2="75" stroke="#21262d" stroke-width="3"/>
+                    <circle cx="25" cy="68" r="6" fill="#fbcfe8"/>
+                    <circle cx="19" cy="64" r="3.5" fill="#db2777"/>
+                    <g class="anim-bridge">
+                        <path d="M31 70 Q 50 70 62 52" fill="none" stroke="#58a6ff" stroke-width="6" stroke-linecap="round"/><line x1="62" y1="52" x2="74" y2="75" stroke="#388bfd" stroke-width="5" stroke-linecap="round"/>
+                        <circle cx="50" cy="54" r="4" fill="#eab308"/></g>
+                </svg>`,
+            bosu: `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <path d="M25 75 C 25 55, 75 55, 75 75 Z" fill="#1f6feb" opacity="0.6"/>
+                    <line x1="15" y1="75" x2="85" y2="75" stroke="#1158c7" stroke-width="4"/>
+                    <g class="anim-bosu">
+                        <circle cx="50" cy="30" r="6" fill="#fbcfe8"/>
+                        <circle cx="50" cy="23" r="3.5" fill="#db2777"/>
+                        <line x1="50" cy="36" x2="50" y2="56" stroke="#58a6ff" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="50" cy="56" x2="44" y2="70" stroke="#388bfd" stroke-width="4"/>
+                        <line x1="50" cy="56" x2="56" y2="70" stroke="#388bfd" stroke-width="4"/>
+                    </g>
+                </svg>`,
+            floorPress: `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <line x1="15" y1="75" x2="85" y2="75" stroke="#21262d" stroke-width="3"/>
+                    <circle cx="25" cy="70" r="6" fill="#fbcfe8"/>
+                    <line x1="31" y1="72" x2="65" y2="72" stroke="#58a6ff" stroke-width="6"/>
+                    <g class="anim-press">
+                        <line x1="48" y1="72" x2="48" y2="48" stroke="#f43f5e" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="40" y1="48" x2="56" y2="48" stroke="#ff7b72" stroke-width="4"/>
+                    </g>
+                </svg>`,
+            row: `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="35" cy="30" r="6" fill="#fbcfe8"/>
+                    <circle cx="35" cy="23" r="3.5" fill="#db2777"/>
+                    <line x1="35" y1="36" x2="35" y2="60" stroke="#58a6ff" stroke-width="6"/>
+                    <g class="anim-row">
+                        <line x1="35" y1="42" x2="65" y2="42" stroke="#388bfd" stroke-width="5" stroke-linecap="round"/>
+                        <circle cx="65" cy="42" r="4" fill="#fff"/>
+                    </g>
+                </svg>`,
+            shoulderPress: `
+                <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <circle cx="50" cy="35" r="6" fill="#fbcfe8"/>
+                    <line x1="50" y1="41" x2="50" y2="65" stroke="#58a6ff" stroke-width="6"/>
+                    <g class="anim-shoulder">
+                        <line x1="36" y1="46" x2="36" y2="24" stroke="#f43f5e" stroke-width="4"/>
+                        <line x1="64" y1="46" x2="64" y2="24" stroke="#f43f5e" stroke-width="4"/>
+                    </g>
+                </svg>`
+        };
+
+        const program = {
+            day1: {
+                title: "Alt Vücut & Core • Salon",
+                meta: "~48 dk • Makine & Kablo • 3 Hareket + Kardiyo",
+                exercises: [
+                    { name: "Seated Leg Press", sets: 3, reps: 12, equip: "Makine", icon: "legPress", targets: ["Ön Uyluk", "Kalça", "Diz Stabilitesi"], desc: "Koltukta dik oturun, belinizi arkaya tam yaslayın. Platformu kontrollüce ayak tabanlarınızla itin. Dizleri en uçta kilitlemeyin." },
+                    { name: "Dumbbell Glute Bridge", sets: 3, reps: 12, equip: "Serbest", icon: "gluteBridge", targets: ["Kalça", "Arka Uyluk", "Core Desteği"], desc: "Mat üzerine sırtüstü yatın. Kalçanıza aldığınız ağırlığı, topuklarınızdan güç alarak yukarı doğru itin. Kalçayı en üstte 1 saniye sıkın." },
+                    { name: "Bosu Topunda Denge", sets: 3, reps: "45 sn", equip: "Bosu", icon: "bosu", targets: ["Bilek Stabilitesi", "Denge", "Propriosepsiyon"], desc: "Ergoterapistinizin önerdiği temel denge egzersizidir. Bosu topunun üzerine iki ayakla çıkarak dik durun ve derin kasları aktif edin." }
+                ]
+            },
+            day2: {
+                title: "Üst Vücut & Postür • Salon",
+                meta: "~40 dk • Sehpada & Kablolu • 3 Hareket",
+                exercises: [
+                    { name: "Dumbbell Floor Press", sets: 3, reps: 12, equip: "Serbest", icon: "floorPress", targets: ["Göğüs", "Arka Kol", "APT Koruma"], desc: "Yerde matın üzerine sırtüstü uzanın. Belinizi yere tam yapıştırarak dumbbell'ları yukarı presleyin. Dirsekler yere hafifçe dokunsun." },
+                    { name: "Seated Cable Row", sets: 3, reps: 12, equip: "Kablo", icon: "row", targets: ["Sırt", "Kürek Kemiği", "Üst Postür"], desc: "Makinede dik oturun. Kabloyu gövdenize doğru çekerken omuzlarınızı aşağı indirin ve kürek kemiklerinizi arkada birbirine yaklaştırın." },
+                    { name: "Dumbbell Seated Press", sets: 3, reps: 10, equip: "Serbest", icon: "shoulderPress", targets: ["Omuz", "Üst Gövde", "Bel Koruma"], desc: "Dik bir sehpaya oturun. Bel kavisini bozmadan omuz hizasındaki ağırlıkları yukarı doğru kontrollü bir şekilde presleyin." }
+                ]
+            },
+            day3: {
+                title: "Tüm Vücut Fonksiyonel • Salon",
+                meta: "~45 dk • Denge & Pilates • 3 Hareket",
+                exercises: [
+                    { name: "Reformer Footwork", sets: 3, reps: 15, equip: "Reformer", icon: "legPress", targets: ["Tüm Bacak", "Core", "Hizalanma"], desc: "Reformer pilateste sırtüstü uzanın. Ayak parmak uçları veya topuklarla barı iterek yay direncine karşı bacakları uzatın." },
+                    { name: "Dead Bug (Mat Üzerinde)", sets: 3, reps: 12, equip: "Mat", icon: "floorPress", targets: ["Alt Karın", "Core Stabilitesi", "APT Düşmanı"], desc: "Sırtüstü uzanın, kolları ve dizleri 90 derece havaya kaldırın. Belinizi mata iyice presleyerek zıt kol ve bacağı yere doğru uzatın." },
+                    { name: "Bosu Topunda Bird-Dog", sets: 3, reps: 10, equip: "Bosu", icon: "bosu", targets: ["Denge", "Bel ve Sırt", "Derin Kaslar"], desc: "Dizleri Bosu topunun üzerine koyup emekleme pozisyonu alın. Dengenizi bozmadan sağ kol ve sol bacağı düz bir çizgi olacak gibi uzatın." }
+                ]
+            }
+        };
+
+        function switchDay(dayId) {
+            // Sekme Renklerini Güncelle
+            ['day1', 'day2', 'day3'].forEach(d => {
+                document.getElementById(`tab-${d}`).classList.remove('tab-active');
+            });
+            document.getElementById(`tab-${dayId}`).classList.add('tab-active');
+
+            // Başlıkları Değiştir
+            document.getElementById('section-title').innerText = program[dayId].title;
+            document.getElementById('section-meta').innerText = program[dayId].meta;
+
+            // Kartları Listele
+            const container = document.getElementById('workout-container');
+            container.innerHTML = '';
+
+            program[dayId].exercises.forEach((ex, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-[#161b22] border border-[#30363d] rounded-xl p-4 flex justify-between items-center cursor-pointer hover:bg-[#1c2128] transition";
+                card.setAttribute('onclick', `openModal('${dayId}', ${index})`);
+                
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-[#21262d] rounded-lg p-1 flex items-center justify-center">
+                            ${svgs[ex.icon]}
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-[#f0f6fc]">${ex.name}</h4>
+                            <p class="text-xs text-[#8b949e]">${ex.sets} Set · ${ex.reps}</p>
+                        </div>
+                    </div>
+                    <div class="text-[#58a6ff] text-xs font-semibold flex items-center space-x-1">
+                        <span>Detay</span>
+                        <span>❯</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function openModal(dayId, index) {
+            const ex = program[dayId].exercises[index];
+            
+            document.getElementById('modal-title').innerText = ex.name;
+            document.getElementById('modal-sets').innerText = ex.sets;
+            document.getElementById('modal-reps').innerText = ex.reps;
+            document.getElementById('modal-equip').innerText = ex.equip;
+            document.getElementById('modal-desc').innerText = ex.desc;
+            
+            // Animasyon SVG'sini Yükle
+            document.getElementById('modal-animation-box').innerHTML = svgs[ex.icon];
+
+            // Kas Grupları Butonlarını Yükle
+            const targetBox = document.getElementById('modal-targets');
+            targetBox.innerHTML = '';
+            ex.targets.forEach(t => {
+                const span = document.createElement('span');
+                span.className = "text-[11px] font-semibold bg-[#21262d] text-[#58a6ff] border border-[#30363d] px-2.5 py-1 rounded-full";
+                span.innerText = t;
+                targetBox.appendChild(span);
+            });
+
+            // Pencereyi Göster
+            document.getElementById('exercise-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('exercise-modal').classList.add('hidden');
+        }
+
+        // Sayfa İlk Açıldığında 1. Günü Yükle
+        window.onload = function() {
+            switchDay('day1');
+        };
+    </script>
+</body>
+</html>
