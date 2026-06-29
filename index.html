@@ -13,7 +13,6 @@
 </head>
 <body class="bg-gray-50 font-sans pb-24">
 
-    <!-- Header -->
     <header class="bg-indigo-600 text-white p-4 shadow-md sticky top-0 z-50">
         <h1 class="text-xl font-bold text-center">FitRutinim</h1>
         <p class="text-xs text-center text-indigo-200">Kas Kütlesi, Denge & APT Postür Desteği</p>
@@ -21,22 +20,18 @@
 
     <main class="max-w-md mx-auto p-4">
         
-        <!-- Gün Seçimi -->
         <div class="flex space-x-2 mb-4 bg-white p-1 rounded-lg shadow-sm">
             <button onclick="switchDay('day1')" id="btn-day1" class="flex-1 py-2 text-xs font-bold rounded-md bg-indigo-600 text-white">1. Gün: Alt & APT</button>
             <button onclick="switchDay('day2')" id="btn-day2" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">2. Gün: Üst & Postür</button>
             <button onclick="switchDay('day3')" id="btn-day3" class="flex-1 py-2 text-xs font-bold rounded-md text-gray-600">3. Gün: Tüm Vücut</button>
         </div>
 
-        <!-- Rutin Bölümü -->
         <div id="program-section">
             
-            <!-- Kas Zorlama Kılavuzu -->
             <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl mb-3 text-xs text-indigo-900">
                 <span class="font-bold">🔥 Doğru Ağırlık Seçimi:</span> Set bittiğinde "nizami formda en fazla 2-3 tekrar daha yapabilirdim" hissetmelisiniz. Set aralarında <strong>60-90 sn</strong> dinlenin.
             </div>
 
-            <!-- Isınma Kartı -->
             <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl mb-4 text-xs space-y-1.5">
                 <div class="font-bold text-amber-800 flex items-center">🏃‍♀️ Sabit Isınma Protokolü (7 dk)</div>
                 <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-amber-900 font-bold">Hız: 4.5-5.0 km/s | Eğim: %1</span> (Hafif Başlangıç)</p>
@@ -44,10 +39,8 @@
                 <p class="text-gray-500 italic mt-1">*Bant sonrası 1-2 dk Couch Stretch & Kedi-Deve esnemesi yapınız (APT için).</p>
             </div>
 
-            <!-- Hareket Listesi -->
             <div id="workout-list" class="space-y-4"></div>
 
-            <!-- Soğuma Kartı -->
             <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl mt-4 text-xs space-y-1.5">
                 <div class="font-bold text-blue-800 flex items-center">🧘‍♀️ Sabit Soğuma Protokolü (5 dk)</div>
                 <p class="text-gray-700 font-medium">• 0-3 dk: <span class="text-blue-900 font-bold">Hız: 4.2-4.5 km/s | Eğim: %1.5</span> (Yavaşlama)</p>
@@ -56,7 +49,6 @@
             </div>
         </div>
 
-        <!-- Grafik Bölümü -->
         <div id="graph-section" class="hidden bg-white p-4 rounded-xl shadow-sm mt-2">
             <h3 class="text-sm font-bold text-gray-800 mb-4">Haftalık Ağırlık Gelişimi</h3>
             <canvas id="progressChart" width="400" height="250"></canvas>
@@ -64,7 +56,6 @@
 
     </main>
 
-    <!-- Nav Bar -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-2 flex justify-around max-w-md mx-auto shadow-lg z-50">
         <button onclick="showSection('program')" class="flex flex-col items-center text-indigo-600 font-medium text-xs">
             <span class="text-lg">🏋️‍♀️</span><span>Programım</span>
@@ -75,21 +66,34 @@
     </nav>
 
     <script>
+        // Kadın figürlü özel çizim SVG'leri
+        const svgIcons = {
+            legPress: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M52 48H28a2 2 0 0 1-2-2V28a2 2 0 0 1 2-2h4v-4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v4h4a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2zm-18-6h12v-4H34zm-4-10h16v-2H30zm14-16h-4v4h4zM16 52a4 4 0 1 1 4-4 4 4 0 0 1-4 4zm0-6a2 2 0 1 0 2 2 2 2 0 0 0-2-2zm28-34a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`,
+            gluteBridge: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M58 44H40c-2.2 0-4-1.8-4-4v-6c0-2.2 1.8-4 4-4h2v-4c0-2.2-1.8-4-4-4h-8c-2.2 0-4 1.8-4 4v8c0 2.2 1.8 4 4 4h4v6c0 2.2-1.8 4-4 4H10a2 2 0 0 1 0-4h22v-6h-4c-4.4 0-8-3.6-8-8v-8c0-4.4 3.6-8 8-8h8c4.4 0 8 3.6 8 8v4h2c4.4 0 8 3.6 8 8v6c0 4.4-3.6 8-8 8h12a2 2 0 0 1 0 4zM32 12a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`,
+            bosu: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M54 44c0-9.9-10-18-22-18S10 34.1 10 44h44zm-22-22c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3zm26 26H6a2 2 0 0 1 0-4h52a2 2 0 0 1 0 4z"/></svg>`,
+            floorPress: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M54 46H10a2 2 0 0 1 0-4h44a2 2 0 0 1 0 4zm-14-8H24v-6h16zm-19-6h22v-2H21zm11-18a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`,
+            row: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M46 44H18c-2.2 0-4-1.8-4-4V24c0-2.2 1.8-4 4-4h16c2.2 0 4 1.8 4 4v4h4c2.2 0 4 1.8 4 4v8c0 2.2-1.8 4-4 4zm-24-6h12v-4H22zm18-10h4v-4h-4zM32 12a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`,
+            shoulderPress: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M42 48H22v-4h20zm-7-8h-6v-8h6zm-3-12a3 3 0 1 1-3 3 3 3 0 0 1 3-3zm18 5a2 2 0 1 1-2-2 2 2 0 0 1 2 2zM16 33a2 2 0 1 1-2-2 2 2 0 0 1 2 2z"/></svg>`,
+            reformer: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M58 46H6a2 2 0 0 1 0-4h2v-8c0-2.2 1.8-4 4-4h40c2.2 0 4 1.8 4 4v8h2a2 2 0 0 1 0 4zM12 34v4h40v-4zm20-14a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`,
+            deadBug: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M52 42H12a2 2 0 0 1 0-4h40a2 2 0 0 1 0 4zm-26-8h-4v-8h4zm12 0h-4v-8h4zm-6-16a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`,
+            birdDog: `<svg viewBox="0 0 64 64" class="w-full h-full fill-indigo-500"><path d="M50 36H14v-4h36zm-26-8h-6v-6h6zm14 0h-6v-6h6zm-10-14a3 3 0 1 1-3 3 3 3 0 0 1 3-3z"/></svg>`
+        };
+
         const workouts = {
             day1: [
-                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu bacak kas kütlesi geliştirir.', img: 'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı güçlendirir.', img: 'https://images.unsplash.com/photo-1434596994282-7ab29f7f16f7?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun yuvarlak/mavi kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ayak bileği ve core stabilitesi sağlar.', img: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=150&auto=format&fit=crop&q=60' }
+                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Kadın sporcu için diz ve bel dostu alt vücut kas kütlesi geliştirir.', icon: 'legPress' },
+                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı doğrudan hedefler.', icon: 'gluteBridge' },
+                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun mavi/yuvarlak kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ergoterapist onaylı derin stabilizasyon.', icon: 'bosu' }
             ],
             day2: [
-                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken iki elinize aldığınız dumbbell\'ları yukarı doğru itin. Beliniz yerde sabit kalır.', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Kablo aparatını dik durarak karnınıza doğru çekin ve kürek kemiklerinizi sıkıştırın. Postür için çok önemlidir.', img: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik bir sehpaya oturarak dumbbell\'ları kulak hizasından yukarı doğru itin. Oturmak belinizi korur.', img: 'https://images.unsplash.com/photo-1605296867424-35fc25c9212a?w=150&auto=format&fit=crop&q=60' }
+                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken çift dumbbell\'ı yukarı doğru itin. Beliniz yerde sabit kaldığı için APT kavisini korur.', icon: 'floorPress' },
+                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Dik durarak kabloyu karnınıza çekin ve kürek kemiklerinizi sıkıştırın. Masa başı çalışan kadınlar için ideal postür egzersizi.', icon: 'row' },
+                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik sehpada oturarak dumbbell\'ları yukarı itin. Oturmak bel omurlarını tamamen güvenceye alır.', icon: 'shoulderPress' }
             ],
             day3: [
-                { id: 'd3_1', name: 'Reformer Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı ileri doğru itin. Yay direnciyle eklemleri koruyarak bacak çalıştırır.', img: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü yatıp kollarınızı havaya kaldırın. Belinizi yere tam yapıştırarak zıt kol ve bacağınızı kontrollü olarak uzatın. APT düşmanı karın hareketidir.', img: 'https://images.unsplash.com/photo-1566241477600-ac026ad43874?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak kısmına koyup emekleme pozisyonu alın. Dengenizi koruyarak zıt kol ve bacağı düz uzatın.', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=150&auto=format&fit=crop&q=60' }
+                { id: 'd3_1', name: 'Reformer Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı itin. Yay direnciyle yerçekimsiz ve eklem dostu kas aktivasyonu sağlar.', icon: 'reformer' },
+                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü kontrollü uzuv uzatma. Belinizi matın içine doğru kuvvetlice presleyin. APT postürünü nötralize eden en etkili kadın core hareketidir.', icon: 'deadBug' },
+                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak yüzeyine koyup emekleme pozisyonu alın. Dengenizi bozmadan zıt kol ve bacağı düz uzatın.', icon: 'birdDog' }
             ]
         };
 
@@ -124,7 +128,9 @@
                 
                 card.innerHTML = `
                     <div class="flex space-x-3">
-                        <img src="${ex.img}" alt="${ex.name}" class="w-16 h-16 object-cover rounded-lg bg-gray-100 shrink-0">
+                        <div class="w-16 h-16 bg-indigo-50 rounded-lg p-2 shrink-0 flex items-center justify-center border border-indigo-100">
+                            ${svgIcons[ex.icon]}
+                        </div>
                         <div class="flex-1">
                             <h4 class="font-bold text-gray-800 text-sm">${ex.name}</h4>
                             <p class="text-xs text-indigo-600 font-bold mb-0.5">${ex.sets} Set x ${ex.reps}</p>
