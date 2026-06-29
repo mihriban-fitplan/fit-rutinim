@@ -31,7 +31,7 @@
         <!-- Rutin Bölümü -->
         <div id="program-section">
             
-            <!-- Kas Zorlama Kılavuzu Bilgilendirmesi -->
+            <!-- Kas Zorlama Kılavuzu -->
             <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl mb-3 text-xs text-indigo-900">
                 <span class="font-bold">🔥 Doğru Ağırlık Seçimi:</span> Set bittiğinde "nizami formda en fazla 2-3 tekrar daha yapabilirdim" hissetmelisiniz. Set aralarında <strong>60-90 sn</strong> dinlenin.
             </div>
@@ -77,19 +77,19 @@
     <script>
         const workouts = {
             day1: [
-                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Diz kapağına yük bindirmeden bacak kas kütlesini artırır. 12 tekrarı zor çıkaracağınız bir plaka ağırlığı seçin.', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'APT düzeltmek için en önemli hareket. Kalçana yerleştireceğin dumbbell, son tekrarlarda kalçanı iyice yakmalı.', img: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Ağırlıksızdır. Bosu topunun üzerinde hafif dizler bükülü dengede kal. Küçük stabilizatör kasları ateşler.', img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=150&auto=format&fit=crop&q=60' }
+                { id: 'd1_1', name: 'Seated Leg Press', sets: 3, reps: 12, desc: 'Bacak pres makinesi. Koltukta oturarak platformu ayaklarınızla itin. Diz ve bel dostu bacak kas kütlesi geliştirir.', img: 'https://images.unsplash.com/photo-1434608519344-49d77a699e1d?w=150&auto=format&fit=crop&q=60' },
+                { id: 'd1_2', name: 'Dumbbell Glute Bridge', sets: 3, reps: 12, desc: 'Kalça köprüsü. Yere sırtüstü yatıp kalçanıza ağırlık koyarak yukarı itin. APT duruşunu düzeltmek için kalçayı güçlendirir.', img: 'https://images.unsplash.com/photo-1434596994282-7ab29f7f16f7?w=150&auto=format&fit=crop&q=60' },
+                { id: 'd1_3', name: 'Bosu Topunda Denge', sets: 3, reps: '45 sn', desc: 'Bosu topunun yuvarlak/mavi kısmının üzerine iki ayakla çıkıp dik durun ve dengenizi koruyun. Ayak bileği ve core stabilitesi sağlar.', img: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=150&auto=format&fit=crop&q=60' }
             ],
             day2: [
-                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde sırtüstü dumbbell itiş. Bel tamamen yerde sabittir. Göğüs ve arka kolları zorlayacak çift dumbbell seçin.', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kabloyu çekme. Kürek kemiklerini sıkıştırırken sırt kaslarında direnç hissetmelisiniz.', img: 'https://images.unsplash.com/photo-1593079357431-438ba991c16c?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Omurgayı korumak için sehpa dik olmalı. Omuz kaslarını büyütecek kontrollü bir ağırlık seçin.', img: 'https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?w=150&auto=format&fit=crop&q=60' }
+                { id: 'd2_1', name: 'Dumbbell Floor Press', sets: 3, reps: 12, desc: 'Yerde göğüs pres. Matta sırtüstü yatarken iki elinize aldığınız dumbbell\'ları yukarı doğru itin. Beliniz yerde sabit kalır.', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&auto=format&fit=crop&q=60' },
+                { id: 'd2_2', name: 'Seated Cable Row', sets: 3, reps: 12, desc: 'Oturarak kürek çekme makinesi. Kablo aparatını dik durarak karnınıza doğru çekin ve kürek kemiklerinizi sıkıştırın. Postür için çok önemlidir.', img: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?w=150&auto=format&fit=crop&q=60' },
+                { id: 'd2_3', name: 'Dumbbell Seated Press', sets: 3, reps: 10, desc: 'Oturarak omuz pres. Dik bir sehpaya oturarak dumbbell\'ları kulak hizasından yukarı doğru itin. Oturmak belinizi korur.', img: 'https://images.unsplash.com/photo-1605296867424-35fc25c9212a?w=150&auto=format&fit=crop&q=60' }
             ],
             day3: [
-                { id: 'd3_1', name: 'Reformer Footwork / Plie Squat', sets: 3, reps: 15, desc: 'Reformer\'da ağır yay direnci veya hafif bir dumbbell ile geniş squat. Bacak kaslarında yüksek aktivasyon hedeflenir.', img: 'https://images.unsplash.com/photo-1518310383802-640c2de311b2?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Ağırlıksız, tamamen karın kontrolü. Belini matın içine doğru presle. Pelvis bölgesini nötre çekmek için yavaş yapın.', img: 'https://images.unsplash.com/photo-1566241477600-ac026ad43874?w=150&auto=format&fit=crop&q=60' },
-                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizler Bosu üzerindeyken zıt kol ve bacak uzatma. Yerçekimine ve dengesizliğe karşı kasların direnmesini sağlayın.', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=150&auto=format&fit=crop&q=60' }
+                { id: 'd3_1', name: 'Reformer Footwork', sets: 3, reps: 15, desc: 'Reformer pilates aletinde sırtüstü yatıp ayak tabanlarıyla barı ileri doğru itin. Yay direnciyle eklemleri koruyarak bacak çalıştırır.', img: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=150&auto=format&fit=crop&q=60' },
+                { id: 'd3_2', name: 'Dead Bug (Mat Üzerinde)', sets: 3, reps: 12, desc: 'Sırtüstü yatıp kollarınızı havaya kaldırın. Belinizi yere tam yapıştırarak zıt kol ve bacağınızı kontrollü olarak uzatın. APT düşmanı karın hareketidir.', img: 'https://images.unsplash.com/photo-1566241477600-ac026ad43874?w=150&auto=format&fit=crop&q=60' },
+                { id: 'd3_3', name: 'Bosu Topunda Bird-Dog', sets: 3, reps: 10, desc: 'Dizlerinizi Bosu\'nun yumuşak kısmına koyup emekleme pozisyonu alın. Dengenizi koruyarak zıt kol ve bacağı düz uzatın.', img: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=150&auto=format&fit=crop&q=60' }
             ]
         };
 
